@@ -1,6 +1,3 @@
-# Core for web.
-django==4.2.3
-
 # [code_style]-[BEGIN]
 # Pre-commit hook.
 pre-commit==3.3.3
@@ -13,3 +10,10 @@ flake8==6.0.0
 # Removes unused imports and unused variables.
 autoflake==2.2.0
 # [code_style]-[END]
+
+
+# Core for web.
+django==4.2.3
+
+# For name generation.
+faker==19.1.0
