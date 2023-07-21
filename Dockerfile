@@ -23,7 +23,7 @@ COPY --chown=${USER} ./apps apps
 
 USER ${USER}
 
-VOLUME ${USER} ${WORKDIR}/db
+VOLUME ${WORKDIR}/db
 
 EXPOSE 8000
 
