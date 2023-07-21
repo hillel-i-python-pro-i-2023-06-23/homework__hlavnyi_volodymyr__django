@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from apps.first_example.generate_users import generate_list_of_users, generate_string_list_of_users
+from apps.first_example.services.generate_users import generate_list_of_users, generate_string_list_of_users
 
 
 # Create your views here.
