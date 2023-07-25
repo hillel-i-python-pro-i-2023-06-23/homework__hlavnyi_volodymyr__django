@@ -15,5 +15,8 @@ autoflake==2.2.0
 # Core for web.
 django==4.2.3
 
+# css bootstrap
+django-bootstrap-v5==1.0.11
+
 # For name generation.
 faker==19.1.0

@@ -1,0 +1,24 @@
+<header>
+    <div class="container">
+        <div>
+            {% load static %}
+            <img src="{% static 'logo.png' %}" alt="My logo">
+        </div>
+        <ul class="nav bg-info">
+            <li class="nav-item">
+                <a class="nav-link link-light" href="{% url 'base:home_page' %}">HOME</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link link-light" href="{% url 'first_example:greetings' name=name|default:"Volodymyr" age=age|default:39 %}">Greetings</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link link-light" href="{% url 'first_example:generate_humans' %}">Generate humans</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link link-light" href="{% url 'first_example:generate_humans' %}">HW 11 Generate users</a>
+            </li>
+        </ul>
+    </div>
+    <br>
+    <br>
+</header>
