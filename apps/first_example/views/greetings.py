@@ -2,19 +2,6 @@ from django.http import HttpResponse
 from django.views.generic import TemplateView
 
 
-# def greetings(request, name: str, age: int):
-#    return render(
-#        request=request,
-#        template_name="first_example/greetings.html",
-#        context={
-#            "name": name,
-#            "age": age,
-#            #
-#            "title": "Greetings",
-#        },
-#    )
-
-
 class GreetingsView(TemplateView):
     template_name = "first_example/greetings.html"
 
