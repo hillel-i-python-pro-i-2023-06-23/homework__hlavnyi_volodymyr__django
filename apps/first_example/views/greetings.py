@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.views.generic import TemplateView
 
 
@@ -30,14 +31,9 @@ class GreetingsView(TemplateView):
         return context
 
 
-# def greetings(request, name: str, age: int):
-#    return HttpResponse(f"Hi {name}. You are {age} years old.")
+def greetings(request, name: str, age: int):
+    return HttpResponse(f"Hi {name}. You are {age} years old.")
 
 
-# def greetings_simple_hi(request):
-#    return HttpResponse("Hi")
-
-
-# def generate_users(request, amount: int = 50):
-#    users = generate_list_of_users(amount=amount)
-#    return HttpResponse(generate_string_list_of_users(users=users, type_of_list="ol"))
+def greetings_simple_hi(request):
+    return HttpResponse("Hi")

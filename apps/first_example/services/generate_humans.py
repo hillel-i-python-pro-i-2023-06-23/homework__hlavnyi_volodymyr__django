@@ -8,7 +8,6 @@ faker = Faker()
 
 class Human(NamedTuple):
     name: str
-    password: str
     email: str
     age: int = 18
 
@@ -19,7 +18,6 @@ class Human(NamedTuple):
 def generate_human() -> Human:
     return Human(
         name=faker.first_name(),
-        password=faker.password(),
         email=faker.email(),
         age=faker.pyint(min_value=18, max_value=100),
     )

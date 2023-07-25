@@ -5,7 +5,7 @@ from apps.first_example.services.generate_humans import generate_humans
 
 def generate_humans_view(
     request,
-    amount: int = 5,
+    amount: int = 10,
 ):
     humans = generate_humans(amount=amount)
 

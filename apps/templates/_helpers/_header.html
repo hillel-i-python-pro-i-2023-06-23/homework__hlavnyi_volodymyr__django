@@ -2,7 +2,10 @@
     <div class="container">
         <div>
             {% load static %}
+            <!-- Dont working :(
             <img src="{% static 'logo.png' %}" alt="My logo">
+            -->
+            <h4>My Logo</h4>
         </div>
         <ul class="nav bg-info">
             <li class="nav-item">
@@ -15,7 +18,7 @@
                 <a class="nav-link link-light" href="{% url 'first_example:generate_humans' %}">Generate humans</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link link-light" href="{% url 'first_example:generate_humans' %}">HW 11 Generate users</a>
+                <a class="nav-link link-light" href="{% url 'first_example:generate_humans_hw11' %}">HW 11 Generate users</a>
             </li>
         </ul>
     </div>

@@ -14,4 +14,13 @@ urlpatterns = [
             ]
         ),
     ),
+    path(
+        "generate-humans-hw11/",
+        include(
+            [
+                path("<int:amount>/", views.generate_humans_hw11_view, name="generate_humans_with_amount_hw11"),
+                path("", views.generate_humans_hw11_view, name="generate_humans_hw11"),
+            ]
+        ),
+    ),
 ]
