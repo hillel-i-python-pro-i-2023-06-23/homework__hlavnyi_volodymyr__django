@@ -18,7 +18,7 @@ class Human_hw11(NamedTuple):
 def change_case(str):
     res = [str[0].lower()]
     for c in str[1:]:
-        if c in ("ABCDEFGHIJKLMNOPQRSTUVWXYZ"):
+        if c in ("ABCDEFGHIJKLMNOPQRSTUVWXYZ."):
             res.append("_")
             res.append(c.lower())
         else:
@@ -29,7 +29,8 @@ def change_case(str):
 
 def generate_human_hw11() -> Human_hw11:
     name = change_case(faker.name())
-    password = faker.password()
+    # faker - turn maximal level :)
+    password = faker.password(length=32, special_chars=True, digits=True, upper_case=True, lower_case=True)
     email = f"{name}@{faker.email().split('@')[1]}"
     return Human_hw11(
         name=name,
