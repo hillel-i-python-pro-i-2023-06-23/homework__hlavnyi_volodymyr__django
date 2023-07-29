@@ -8,6 +8,7 @@ def generate_humans_hw11_view(
     amount: int = 10,
 ):
     list_of_humans = generate_humans_hw11(amount=amount)
+    # list_of_humans_checked = check_unique_human_hw11(list_of_humans)
 
     return render(
         request=request,
