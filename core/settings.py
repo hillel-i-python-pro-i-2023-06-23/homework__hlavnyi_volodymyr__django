@@ -43,11 +43,12 @@ DJANGO_APPS = [
 LOCAL_APPS = [
     "apps.base",
     "apps.first_example",
+    "apps.contacts",
 ]
 
 THIRD_PARTY_APPS = [
     "bootstrap5",
-    "phonenumber_field",
+    # "phonenumber_field",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTY_APPS
