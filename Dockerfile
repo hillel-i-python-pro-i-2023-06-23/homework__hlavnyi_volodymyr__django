@@ -29,8 +29,6 @@ USER ${USER}
 
 VOLUME ${WORKDIR}/db
 
-RUN python manage.py migrate
-
 EXPOSE 8000
 
 ENTRYPOINT ["/entrypoint.sh"]
