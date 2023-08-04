@@ -2,6 +2,20 @@
 
 {% block content %}
     <h1>Contacts</h1>
+    <div>
+        <nav class="navbar navbar-light bg-light">
+            <form class="container-fluid justify-content-start">
+                <button class="btn btn-outline-info" type="button"
+                "{% url 'contacts:contacts_list' %}">Show list of all Contacts</button>
+
+                <button class="btn btn-outline-info" type="button"
+                "{% url 'contacts:contacts_list' %}">Add new Contacts</button>
+
+                <button class="btn btn-outline-info" type="button"
+                "{% url 'contacts:contacts_list' %}">Delete all Contacts</button>
+            </form>
+        </nav>
+    </div>
     <table class="table table-striped">
         <thead>
         <tr>
@@ -21,6 +35,14 @@
                 <td>{{ contact.phone_number }}</td>
                 <td>{{ contact.created_at }}</td>
                 <td>{{ contact.modified_at }}</td>
+                <td>
+                    <button class="btn btn-outline-info" type="button"
+                    "{% url 'contacts:contacts_list' %}">Edit</button>
+                </td>
+                <td>
+                    <button class="btn btn-outline-info" type="button"
+                    "{% url 'contacts:contacts_list' %}">Delete</button>
+                </td>
             </tr>
         {% endfor %}
     </table>
