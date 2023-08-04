@@ -2,15 +2,13 @@
     <div class="container">
         <div>
             {% load static %}
-            <!-- Dont working :(
-            <img src="{% static 'logo.png' %}" alt="My logo">
-            -->
-            <h4>My Logo</h4>
+            <img src="{% static 'hw13/logo_hw_13.png' %}" width="507" height="64" alt="My logo">
         </div>
         <ul class="nav bg-info">
             <li class="nav-item">
                 <a class="nav-link link-light" href="{% url 'base:home_page' %}">HOME</a>
             </li>
+            <!--
             <li class="nav-item">
                 <a class="nav-link link-light" href="{% url 'first_example:greetings' name=name|default:"Volodymyr" age=age|default:39 %}">Greetings</a>
             </li>
@@ -20,9 +18,15 @@
             <li class="nav-item">
                 <a class="nav-link link-light" href="{% url 'first_example:generate_humans_hw11' %}">HW 11 Generate users</a>
             </li>
+            -->
             <li class="nav-item">
                 <a class="nav-link link-light" href="{% url 'contacts:contacts_list' %}">HW 12. Django. Contacts and commands.</a>
             </li>
+
+            <li class="nav-item">
+                <a class="nav-link link-light" href="{% url 'contacts:contacts_list' %}">HW 13. Django. Contacts and CRUD.</a>
+            </li>
+
         </ul>
     </div>
     <br>
