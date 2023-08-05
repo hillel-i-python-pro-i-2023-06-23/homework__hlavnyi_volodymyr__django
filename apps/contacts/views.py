@@ -2,7 +2,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DeleteView, UpdateView
 
-# from django.views.generic import (CreateView, FormView)
+from django.views.generic import CreateView
 
 from apps.contacts.forms import GenerateForm
 from apps.contacts.models import Contact
@@ -13,6 +13,15 @@ from apps.contacts.services.generate_and_save_contacts import generate_and_save_
 
 class ContactsListView(ListView):
     model = Contact
+
+
+class ContactsCreateView(CreateView):
+    model = Contact
+    fields = (
+        "name",
+        "phone_number",
+    )
+    success_url = reverse_lazy("contacts:contacts_list")
 
 
 def delete_contacts_view(request):

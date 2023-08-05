@@ -5,8 +5,15 @@
                 Show list of all Contacts
             </button>
         </a>
+
+        <a href="{% url 'contacts:contacts_create' %}">
+            <button class="btn btn-outline-secondary" type="button">
+                Add new Contacts
+            </button>
+        </a>
+
         <a href="{% url 'contacts:contacts_generate' %}">
-            <button class="btn btn-outline-primary" type="button">
+            <button class="btn btn-outline-success" type="button">
                 Generate new Contacts
             </button>
         </a>
