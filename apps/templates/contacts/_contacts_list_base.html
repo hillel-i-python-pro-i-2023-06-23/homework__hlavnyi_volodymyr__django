@@ -1,0 +1,60 @@
+<div>
+    <nav class="navbar navbar-light bg-light">
+        <form class="container-fluid justify-content-start">
+            <a href="{% url 'contacts:contacts_list' %}">
+                <button class="btn btn-outline-primary" type="button">
+                    Show list of all Contacts
+                </button>
+            </a>
+            <a href="{% url 'contacts:contacts_list' %}">
+                <button class="btn btn-outline-primary" type="button">
+                    Generate new Contacts
+                </button>
+            </a>
+
+            <a href="{% url 'contacts:contacts_delete' %}">
+                <button class="btn btn-outline-danger" type="button">
+                    Delete all Contacts
+                </button>
+            </a>
+
+        </form>
+    </nav>
+</div>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col"></th>
+        <th>PK</th>
+        <th>name</th>
+        <th>phone number</th>
+        <th>created at</th>
+        <th>modified at</th>
+    </tr>
+    </thead>
+    {% for contact in object_list %}
+        <tr>
+            <th scope="row"></th>
+            <td>{{ contact.pk }}</td>
+            <td>{{ contact.name }}</td>
+            <td>{{ contact.phone_number }}</td>
+            <td>{{ contact.created_at }}</td>
+            <td>{{ contact.modified_at }}</td>
+            <td>
+                <a href="{% url 'contacts:contacts_update' contact.pk %}">
+                    <button class="btn btn-outline-primary" type="button">
+                        Edit
+                    </button>
+                </a>
+
+            </td>
+            <td>
+                <a href="{% url 'contacts:contacts_delete' contact.pk %}">
+                    <button class="btn btn-outline-danger" type="button">
+                        Delete
+                    </button>
+                </a>
+            </td>
+        </tr>
+    {% endfor %}
+</table>

@@ -2,48 +2,6 @@
 
 {% block content %}
     <h1>Contacts</h1>
-    <div>
-        <nav class="navbar navbar-light bg-light">
-            <form class="container-fluid justify-content-start">
-                <button class="btn btn-outline-info" type="button"
-                "{% url 'contacts:contacts_list' %}">Show list of all Contacts</button>
 
-                <button class="btn btn-outline-info" type="button"
-                "{% url 'contacts:contacts_list' %}">Add new Contacts</button>
-
-                <button class="btn btn-outline-info" type="button"
-                "{% url 'contacts:contacts_list' %}">Delete all Contacts</button>
-            </form>
-        </nav>
-    </div>
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th scope="col"></th>
-            <th>PK</th>
-            <th>name</th>
-            <th>phone number</th>
-            <th>created at</th>
-            <th>modified at</th>
-        </tr>
-        </thead>
-        {% for contact in object_list %}
-            <tr>
-                <th scope="row"></th>
-                <td>{{ contact.pk }}</td>
-                <td>{{ contact.name }}</td>
-                <td>{{ contact.phone_number }}</td>
-                <td>{{ contact.created_at }}</td>
-                <td>{{ contact.modified_at }}</td>
-                <td>
-                    <button class="btn btn-outline-info" type="button"
-                    "{% url 'contacts:contacts_list' %}">Edit</button>
-                </td>
-                <td>
-                    <button class="btn btn-outline-info" type="button"
-                    "{% url 'contacts:contacts_list' %}">Delete</button>
-                </td>
-            </tr>
-        {% endfor %}
-    </table>
+    {% include "contacts/_contacts_list_base.html" with contacts_list=object_list %}
 {% endblock %}

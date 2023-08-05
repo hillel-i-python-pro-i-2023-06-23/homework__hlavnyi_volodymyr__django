@@ -1,0 +1,25 @@
+{% extends "_helpers/_base.html" %}
+
+{% block content %}
+    <h1> Edit contact </h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <div>
+            <!--
+            <button type="submit">Save</button>
+            -->
+            <button class="btn btn-outline-danger" type="submit">Save</button>
+
+            <a href="{% url 'contacts:contacts_list' %}">
+                <button class="btn btn-outline-primary" type="button">
+                    Cancel
+                </button>
+            </a>
+
+        </div>
+    </form>
+
+{% endblock %}

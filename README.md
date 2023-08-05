@@ -1,4 +1,4 @@
-# Djangp application
+# Django application
 
 ---
 ![Main workflow](https://github.com/hillel-i-python-pro-i-2023-06-23/homework__hlavnyi_volodymyr__django/actions/workflows/main-workflow.yml/badge.svg)
