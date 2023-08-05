@@ -11,4 +11,6 @@ urlpatterns = [
     path("delete/<int:pk>/", views.ContactDeleteView.as_view(), name="contacts_delete"),
     #
     path("update/<int:pk>/", views.ContactUpdateView.as_view(), name="contacts_update"),
+    #
+    path("generate/", views.generate_contacts_view, name="contacts_generate"),
 ]
