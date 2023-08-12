@@ -1,0 +1,27 @@
+<header>
+    <div class="container">
+        <div>
+            {% load static %}
+            <img src="{% static "contacts/logo_hw_12.png" %}" width="700" height="100" alt="My logo">
+        </div>
+        <ul class="nav bg-info">
+            <li class="nav-item">
+                <a class="nav-link link-light" href="{% url 'base:home_page' %}">HOME</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link link-light" href="{% url 'first_example:greetings' name=name|default:"Volodymyr" age=age|default:39 %}">Greetings</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link link-light" href="{% url 'first_example:generate_humans' %}">Generate humans</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link link-light" href="{% url 'first_example:generate_humans_hw11' %}">HW 11 Generate users</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link link-light" href="{% url 'contacts:contacts_list' %}">HW 12. Django. Contacts and commands.</a>
+            </li>
+        </ul>
+    </div>
+    <br>
+    <br>
+</header>

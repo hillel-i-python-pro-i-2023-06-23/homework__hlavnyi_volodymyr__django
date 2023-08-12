@@ -1,0 +1,23 @@
+{% extends "_helpers/_base.html" %}
+
+{% block content %}
+    <h2>Humans for HW 11</h2>
+            <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col"></th>
+                    <th>login name</th>
+                    <th>email</th>
+                    <th>password</th>
+                </tr>
+            </thead>
+                {% for human in humans %}
+            <tr>
+                <th scope="row"></th>
+                <td>{{ human.name }}</td>
+                <td>{{ human.email }}</td>
+                <td>{{ human.password }}</td>
+            </tr>
+            {% endfor %}
+           </table>
+{% endblock %}

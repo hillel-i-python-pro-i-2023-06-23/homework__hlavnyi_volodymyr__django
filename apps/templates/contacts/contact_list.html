@@ -1,0 +1,27 @@
+{% extends "_helpers/_base.html" %}
+
+{% block content %}
+    <h1>Contacts</h1>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col"></th>
+            <th>PK</th>
+            <th>name</th>
+            <th>phone number</th>
+            <th>created at</th>
+            <th>modified at</th>
+        </tr>
+        </thead>
+        {% for contact in object_list %}
+            <tr>
+                <th scope="row"></th>
+                <td>{{ contact.pk }}</td>
+                <td>{{ contact.name }}</td>
+                <td>{{ contact.phone_number }}</td>
+                <td>{{ contact.created_at }}</td>
+                <td>{{ contact.modified_at }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
