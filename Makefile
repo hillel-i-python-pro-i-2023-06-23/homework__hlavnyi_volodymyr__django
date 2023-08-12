@@ -73,9 +73,9 @@ migrations:
 migrate:
 	@python manage.py migrate
 
-.PHONY: migrate-all
+.PHONY: init-dev-i-migrate-all
 # Make migrations and make migrate together
-migrate-all:
+init-dev-i-migrate-all:
 	@python manage.py makemigrations && \
 	python manage.py migrate
 
@@ -94,7 +94,7 @@ init-dev-i-create-superuser:
 init-dev-i-delete-superuser:
 	@python manage.py delete_superuser
 
-.PHONY: generate_contacts
-# generate_contacts 20
-generate_contacts:
+.PHONY: init-dev-i-generate-contacts
+# init-dev-i-generate-contacts 20
+init-dev-i-generate-contacts:
 	@python manage.py generate_contacts --amount 20

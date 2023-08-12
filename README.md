@@ -74,3 +74,30 @@ Purge all data related with services
 ```shell
 make d-purge
 ```
+
+## 🧭 Setup first environment
+
+### ➕ Create superuser
+
+```shell
+make init-dev-i-create-superuser
+```
+
+### ➖ Delete superuser
+
+```shell
+make init-dev-i-delete-superuser
+```
+
+### 📞 Generate contacts (20 items)
+
+```shell
+make init-dev-i-generate-contacts
+```
+
+### Migrate (migrations and migrate)
+
+```shell
+make init-dev-i-migrate-all
+```
+
