@@ -72,3 +72,29 @@ migrations:
 # Migrate
 migrate:
 	@python manage.py migrate
+
+.PHONY: migrate-all
+# Make migrations and make migrate together
+migrate-all:
+	@python manage.py makemigrations && \
+	python manage.py migrate
+
+.PHONY: init-dev-i-create-superuser-cmd
+# Create superuser
+init-dev-i-create-superuser-cmd:
+	@DJANGO_SUPERUSER_PASSWORD=admin123 python manage.py createsuperuser --user admin --email admin@gmail.com --no-input
+
+.PHONY: init-dev-i-create-superuser
+# Create superuser
+init-dev-i-create-superuser:
+	@python manage.py create_superuser
+
+.PHONY: init-dev-i-delete-superuser
+# Delete superuser
+init-dev-i-delete-superuser:
+	@python manage.py delete_superuser
+
+.PHONY: generate_contacts
+# generate_contacts 20
+generate_contacts:
+	@python manage.py generate_contacts --amount 20
