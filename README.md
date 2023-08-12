@@ -75,6 +75,9 @@ Purge all data related with services
 make d-purge
 ```
 
+---
+
+
 ## 🧭 Setup first environment
 
 ### ➕ Create superuser
