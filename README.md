@@ -5,7 +5,7 @@
 
 ## 🏠 Homework 
 
-### (branch12 - HW 12. Django. Contacts and commands.)
+### Study Django
 
 Homework related actions.
 
