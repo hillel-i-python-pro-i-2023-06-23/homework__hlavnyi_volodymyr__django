@@ -23,6 +23,11 @@ class Contact(models.Model):
         null=False,
     )
 
+    group_of_contact = models.ManyToManyField(
+        "Group_of_contact",
+        related_name="contacts",
+    )
+
     def __str__(self):
         return f"{self.name} {self.phone_number}"
 
