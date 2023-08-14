@@ -2,24 +2,24 @@
 # Pre-commit hook.
 pre-commit==3.3.3
 # Upgrade syntax.
-pyupgrade==3.9.0
+pyupgrade==3.10.1
 # Formatter. Apply codestyle.
 black==23.7.0
 # Check codestyle.
-flake8==6.0.0
+flake8==6.1.0
 # Removes unused imports and unused variables.
 autoflake==2.2.0
 # [code_style]-[END]
 
 
 # Core for web.
-django==4.2.3
+django==4.2.4
 
 # css bootstrap
 django-bootstrap-v5==1.0.11
 
 # For name generation.
-faker==19.2.0
+faker==19.3.0
 
 #[Future functionality]
 # For pretty phone numbers
