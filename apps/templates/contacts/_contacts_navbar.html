@@ -1,0 +1,28 @@
+<nav class="navbar navbar-light bg-light">
+    <form class="container-fluid justify-content-start">
+        <a href="{% url 'contacts:contacts_list' %}">
+            <button class="btn btn-outline-primary" type="button">
+                Show list of all Contacts
+            </button>
+        </a>
+
+        <a href="{% url 'contacts:contacts_create' %}">
+            <button class="btn btn-outline-secondary" type="button">
+                Add new Contacts
+            </button>
+        </a>
+
+        <a href="{% url 'contacts:contacts_generate' %}">
+            <button class="btn btn-outline-success" type="button">
+                Generate new Contacts
+            </button>
+        </a>
+
+        <a href="{% url 'contacts:contacts_delete' %}">
+            <button class="btn btn-outline-danger" type="button">
+                Delete all Contacts
+            </button>
+        </a>
+
+    </form>
+</nav>

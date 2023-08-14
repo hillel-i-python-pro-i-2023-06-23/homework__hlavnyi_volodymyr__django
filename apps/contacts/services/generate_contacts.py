@@ -10,7 +10,8 @@ faker = Faker()
 def generate_contact() -> Contact:
     return Contact(
         name=faker.first_name(),
-        phone_number=faker.phone_number(),
+        # phone_number=faker.phone_number(),
+        phone_number=f"{faker.country_calling_code()}{faker.msisdn()}",
     )
 
 
