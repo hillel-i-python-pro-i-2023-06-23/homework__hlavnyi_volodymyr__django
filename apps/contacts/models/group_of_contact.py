@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class Group_of_contact(models.Model):
+class GroupOfContact(models.Model):
     """
     Group of contacts.
     For example:

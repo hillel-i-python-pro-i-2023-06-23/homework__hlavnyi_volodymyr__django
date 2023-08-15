@@ -11,6 +11,13 @@ class Contact(models.Model):
     # phone_number = PhoneNumberField(blank=True)
     phone_number = models.CharField(max_length=30, blank=True)
 
+    date_of_birth = models.DateField(blank=True, null=True)
+
+    groups_of_contact = models.ManyToManyField(
+        "GroupOfContact",
+        related_name="contacts",
+    )
+
     created_at = models.DateTimeField(
         auto_now_add=True,
         blank=False,
@@ -21,11 +28,6 @@ class Contact(models.Model):
         auto_now=True,
         blank=False,
         null=False,
-    )
-
-    group_of_contact = models.ManyToManyField(
-        "Group_of_contact",
-        related_name="contacts",
     )
 
     def __str__(self):

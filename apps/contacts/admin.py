@@ -10,7 +10,7 @@ class ContactAdmin(admin.ModelAdmin):
     list_display = (
         "name",
         "phone_number",
-        "group_of_contact",
+        "date_of_birth",
         "created_at",
         "modified_at",
     )
@@ -18,23 +18,19 @@ class ContactAdmin(admin.ModelAdmin):
     list_filter = (
         "name",
         "phone_number",
+        "date_of_birth",
         "created_at",
         "modified_at",
     )
 
 
-@admin.register(models.Group_of_contact)
-class Group_of_contactAdmin(admin.ModelAdmin):
+@admin.register(models.GroupOfContact)
+class GroupOfContactAdmin(admin.ModelAdmin):
     list_display = (
         "name",
         "created_at",
         "modified_at",
-    )
-
-    list_filter = (
-        "name",
         #
+        "amount_of_contacts",
         #
-        "created_at",
-        "modified_at",
     )
