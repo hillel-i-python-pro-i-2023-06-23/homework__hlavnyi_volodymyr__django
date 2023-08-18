@@ -2,6 +2,10 @@ from django.contrib import admin
 from apps.contacts import models
 
 
+class InfoContactInline(admin.TabularInline):
+    model = models.InfoOfContact
+
+
 @admin.register(models.Contact)
 class ContactAdmin(admin.ModelAdmin):
     list_display = (
@@ -18,6 +22,10 @@ class ContactAdmin(admin.ModelAdmin):
         "created_at",
         "modified_at",
     )
+
+    inlines = [
+        InfoContactInline,
+    ]
 
     def list_of_contacts(self, obj):
         return super().get_queryset(self).select_related("info_of_contact")
