@@ -19,7 +19,7 @@ class ContactsCreateView(CreateView):
     model = Contact
     fields = (
         "name",
-        "phone_number",
+        # "phone_number",
     )
     success_url = reverse_lazy("contacts:contacts_list")
 
@@ -38,7 +38,7 @@ class ContactUpdateView(UpdateView):
     model = Contact
     fields = (
         "name",
-        "phone_number",
+        # "phone_number",
     )
 
     def get_success_url(self):

@@ -9,7 +9,9 @@ class Contact(models.Model):
     name = models.CharField(max_length=100)
     # Optional phone number
     # phone_number = PhoneNumberField(blank=True)
-    phone_number = models.CharField(max_length=30, blank=True)
+
+    # in this task we  can has many phone numbers and othe contacts info
+    # phone_number = models.CharField(max_length=30, blank=True)
 
     date_of_birth = models.DateField(blank=True, null=True)
 
@@ -31,7 +33,7 @@ class Contact(models.Model):
     )
 
     def __str__(self):
-        return f"{self.name} {self.phone_number}"
+        return self.name
 
     class Meta:
         ordering = ["-modified_at", "name"]
