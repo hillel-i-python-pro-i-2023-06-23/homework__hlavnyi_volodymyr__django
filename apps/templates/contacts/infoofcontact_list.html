@@ -1,0 +1,17 @@
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col"></th>
+        <th>type</th>
+        <th>value</th>
+    </tr>
+    </thead>
+    {% for info in info_of_contacts %}
+        <tr>
+            <th scope="row"></th>
+
+            <td>{{ info.type }}</td>
+            <td>{{ info.value }}</td>
+        </tr>
+    {% endfor %}
+</table>

@@ -2,28 +2,34 @@
     <thead>
     <tr>
         <th scope="col"></th>
-        <th>PK</th>
         <th>name</th>
-
+        <th>date of birth</th>
         <th>created at</th>
         <th>modified at</th>
+        <th>Extra info</th>
     </tr>
     </thead>
     {% for contact in object_list %}
         <tr>
             <th scope="row"></th>
-            <td>{{ contact.pk }}</td>
-            <td>{{ contact.name }}</td>
 
+            <td>{{ contact.name }}</td>
+            <td>{{ contact.date_of_birth }}</td>
             <td>{{ contact.created_at }}</td>
             <td>{{ contact.modified_at }}</td>
+            <td>
+                <a href="{% url 'contacts:contacts_detail' contact.pk %}">
+                    <button class="btn btn-outline-primary" type="button">
+                        Detail
+                    </button>
+                </a>
+            </td>
             <td>
                 <a href="{% url 'contacts:contacts_update' contact.pk %}">
                     <button class="btn btn-outline-primary" type="button">
                         Edit
                     </button>
                 </a>
-
             </td>
             <td>
                 <a href="{% url 'contacts:contacts_delete' contact.pk %}">
@@ -32,6 +38,8 @@
                     </button>
                 </a>
             </td>
+
+
         </tr>
     {% endfor %}
 </table>

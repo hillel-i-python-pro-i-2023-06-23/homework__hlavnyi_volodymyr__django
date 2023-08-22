@@ -1,11 +1,11 @@
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DeleteView, UpdateView
+from django.views.generic import ListView, DeleteView, UpdateView, DetailView
 
 from django.views.generic import CreateView
 
 from apps.contacts.forms import GenerateForm
-from apps.contacts.models import Contact
+from apps.contacts.models import Contact, InfoOfContact
 from apps.contacts.services.delete_contacts import delete_contacts
 
 from apps.contacts.services.generate_and_save_contacts import generate_and_save_contacts
@@ -13,6 +13,35 @@ from apps.contacts.services.generate_and_save_contacts import generate_and_save_
 
 class ContactsListView(ListView):
     model = Contact
+    context_object_name = "my_contacts_list"
+    # context_object_name = "my_favorite_publishers"
+    # queryset = Contact.objects.all()
+    # template_name = "contacts/contact_list.html"
+
+
+# class ContactsDetailView(DetailView):
+#    context_object_name = "contacts_list"
+#    queryset = InfoOfContact.objects.all()
+
+
+# class AcmeBookListView(ListView):
+#    context_object_name = "book_list"
+#    queryset = Book.objects.filter(publisher__name="ACME Publishing")
+#    template_name = "books/acme_list.html"
+
+
+class ContactDetailView(DetailView):
+    model = Contact
+
+    # queryset = InfoOfContact.objects.filter(Contacts__pk=Contact.pk)
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        # Add in a QuerySet of all the books
+        # kwargs["instance"] = Animal.objects.get(pk=self.kwargs["pk"])
+        context["info_of_contacts"] = InfoOfContact.objects.filter(contact_id=self.kwargs["pk"])
+
+        return context
 
 
 class ContactsCreateView(CreateView):
