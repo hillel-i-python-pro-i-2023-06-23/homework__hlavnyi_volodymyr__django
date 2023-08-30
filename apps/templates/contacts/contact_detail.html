@@ -1,13 +1,49 @@
 {% extends "_helpers/_base.html" %}
 
-<div>
-{% block content %}
+<form>
+    {% block content %}
 
-    {% include "contacts/_contacts_navbar.html" %}
+        {% include "contacts/_contacts_navbar_w_return.html" %}
 
-    <h1>Contact: {{  contact.name }}</h1>
-    <h3>ID {{  contact.pk }}</h3>
+        <form class="row row-cols-lg-auto g-3 align-items-center">
+            <div class="col-12">
+                <h1>Contact: {{ contact.name }}</h1>
+            </div>
+            <div class="col-12">
+                <h3>(ID: {{ contact.pk }})</h3>
+            </div>
 
-    {% include "contacts/infoofcontact_list.html" with contact=object_list %}
-{% endblock %}
-</div>
+            <a href="{% url 'contacts:contacts_update' contact.pk %}">
+                    <button class="btn btn-outline-primary" type="button">
+                        Edit
+                    </button>
+            </a>
+
+        </form>
+
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link disabled" aria-disabled="true">Groups: </a>
+            </li>
+            {% for group in contact.groups_of_contact.all %}
+                <li class="nav-item">
+                    <a class="nav-link" href="#">{{ group.name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+
+        <div class="col-12">
+            <a href="{% url 'contacts:contacts_details_create' contact.pk %}">
+                <button class="btn btn-outline-primary" type="button">
+                    Add new detailed info
+                </button>
+            </a>
+        </div>
+
+        <br>
+
+        {% include "contacts/infoofcontact_list.html" with contact=object_list %}
+
+    {% endblock %}
+
+</form>

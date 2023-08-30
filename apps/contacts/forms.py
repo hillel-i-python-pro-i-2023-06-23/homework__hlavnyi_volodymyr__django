@@ -31,3 +31,14 @@ class ContactForm(ModelForm):
     class Meta:
         model = InfoOfContact
         fields = ["type", "value"]
+
+
+class ContactDetailForm(forms.ModelForm):
+    class Meta:
+        model = InfoOfContact
+
+        fields = (
+            "contact",
+            "type",
+            "value",
+        )

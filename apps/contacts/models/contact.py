@@ -7,12 +7,6 @@ from django.db import models
 class Contact(models.Model):
     # Name
     name = models.CharField(max_length=100)
-    # Optional phone number
-    # phone_number = PhoneNumberField(blank=True)
-
-    # in this task we  can has many phone numbers and othe contacts info
-    # phone_number = models.CharField(max_length=30, blank=True)
-
     date_of_birth = models.DateField(blank=True, null=True)
 
     groups_of_contact = models.ManyToManyField(

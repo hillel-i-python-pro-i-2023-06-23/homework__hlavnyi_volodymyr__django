@@ -6,6 +6,7 @@ from apps.contacts import models
 from apps.contacts.management.commands.generate_contacts import generate_contacts
 from apps.contacts.services.create_group_of_contacts import create_group_of_contacts
 from apps.contacts.services.create_type_of_contacts import create_type_of_contacts
+from apps.contacts.services.generate_contacts import add_random_groups, add_random_info_of_contact
 
 
 class Command(BaseCommand):
@@ -13,14 +14,23 @@ class Command(BaseCommand):
         pass
 
     def handle(self, *args, **options):
-        # Contacts (20 pcs)
-        init_first_contacts(amount=20)
+        logger = logging.getLogger("django")
 
-        # Group of Contacts
+        # 1st Group of Contacts
+        logger.info("---------Start filling the database with the 1st step")
         init_first_group_of_contacts(["Family", "Friend", "Children", "Job", "Special 2023", "School", "Other"])
+        logger.info("---------Finish filling the database with the 1st step")
 
-        # Type of Contacts
+        # 2nd Type of Contacts
+        logger.info("---------Start filling the database with the 2nd step")
         init_first_type_of_contacts(["Phone", "Email", "LinkedIn", "Telegram", "Other"])
+        logger.info("---------Finish filling the database with the 2nd step")
+
+        # 3rd Contacts
+        # Contacts (20 pcs)
+        logger.info("---------Start filling the database with the 3rd step")
+        init_first_contacts(amount=20)
+        logger.info("---------Finish filling the database with the 3rd step")
 
 
 # Contacts (20 pcs)
@@ -32,7 +42,11 @@ def init_first_contacts(amount: int = 10) -> None:
     logger.info(f"Current amount of Contacts before: {queryset.count()}")
 
     if queryset.count() == 0:
-        generate_contacts(amount=amount)
+        for contact in generate_contacts(amount=amount):
+            contact.save()
+            # add extra fields randomly
+            add_random_groups(contact=contact)
+            add_random_info_of_contact(contact=contact)
         logger.info(f"Create new Contacts (amount is {amount})")
     else:
         logger.info(f"Contacts already exists (current amount is {queryset.count()}). Skip creating new Contacts!")

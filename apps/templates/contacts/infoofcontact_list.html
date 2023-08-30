@@ -4,14 +4,17 @@
         <th scope="col"></th>
         <th>type</th>
         <th>value</th>
+        <th>created at</th>
+        <th>modified at</th>
     </tr>
     </thead>
-    {% for info in info_of_contacts %}
+    {% for info in info_of_contact %}
         <tr>
             <th scope="row"></th>
-
             <td>{{ info.type }}</td>
             <td>{{ info.value }}</td>
+            <td>{{ info.created_at }}</td>
+            <td>{{ info.modified_at }}</td>
         </tr>
     {% endfor %}
 </table>

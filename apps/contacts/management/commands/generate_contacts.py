@@ -4,6 +4,7 @@ from django.core.management.base import BaseCommand
 
 from apps.contacts.models import Contact
 from apps.contacts.services.generate_contacts import generate_contacts
+from apps.contacts.services.generate_contacts import add_random_groups, add_random_info_of_contact
 
 
 class Command(BaseCommand):
@@ -28,5 +29,7 @@ class Command(BaseCommand):
 
         for contact in generate_contacts(amount=amount):
             contact.save()
+            add_random_groups(contact=contact)
+            add_random_info_of_contact(contact=contact)
 
         logger.info(f"Current amount of contacts after: {queryset.count()}")
