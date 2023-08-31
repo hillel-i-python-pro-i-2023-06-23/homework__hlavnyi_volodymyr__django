@@ -1,6 +1,10 @@
 from django import forms
+from django.forms import ModelForm
 
 from apps.contacts.models import Contact
+from apps.contacts.models import InfoOfContact
+
+# from apps.contacts.models import TypeOfContact
 
 
 class GenerateForm(forms.Form):
@@ -19,5 +23,22 @@ class ContactSpecialEditForm(forms.ModelForm):
 
         fields = (
             "name",
-            "phone_number",
+            # "phone_number",
+        )
+
+
+class ContactForm(ModelForm):
+    class Meta:
+        model = InfoOfContact
+        fields = ["type", "value"]
+
+
+class ContactDetailForm(forms.ModelForm):
+    class Meta:
+        model = InfoOfContact
+
+        fields = (
+            "contact",
+            "type",
+            "value",
         )

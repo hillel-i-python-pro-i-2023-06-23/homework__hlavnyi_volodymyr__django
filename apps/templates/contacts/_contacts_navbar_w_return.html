@@ -1,6 +1,7 @@
 <br>
 <nav class="navbar navbar-light bg-light">
     <form class="container-fluid justify-content-start">
+
         <a href="{% url 'contacts:contacts_list' %}">
             <button class="btn btn-outline-primary" type="button">
                 Show list of all Contacts
@@ -26,4 +27,15 @@
         </a>
 
     </form>
+    <br>
+    <br>
+    <nav class="navbar navbar-light bg-light">
+        <form class="container-fluid justify-content-start">
+            <a href="{% url 'contacts:contacts_list' %}">
+                <button class="btn btn-outline-dark" type="button">
+                    Return
+                </button>
+            </a>
+        </form>
+    </nav>
 </nav>

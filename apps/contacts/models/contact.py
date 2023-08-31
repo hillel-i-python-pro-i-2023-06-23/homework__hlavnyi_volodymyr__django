@@ -7,9 +7,12 @@ from django.db import models
 class Contact(models.Model):
     # Name
     name = models.CharField(max_length=100)
-    # Optional phone number
-    # phone_number = PhoneNumberField(blank=True)
-    phone_number = models.CharField(max_length=30, blank=True)
+    date_of_birth = models.DateField(blank=True, null=True)
+
+    groups_of_contact = models.ManyToManyField(
+        "GroupOfContact",
+        related_name="contacts",
+    )
 
     created_at = models.DateTimeField(
         auto_now_add=True,
@@ -24,7 +27,7 @@ class Contact(models.Model):
     )
 
     def __str__(self):
-        return f"{self.name} {self.phone_number}"
+        return self.name
 
     class Meta:
         ordering = ["-modified_at", "name"]

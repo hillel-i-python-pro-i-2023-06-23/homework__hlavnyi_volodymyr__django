@@ -98,3 +98,8 @@ init-dev-i-delete-superuser:
 # init-dev-i-generate-contacts 20
 init-dev-i-generate-contacts:
 	@python manage.py generate_contacts --amount 20
+
+.PHONY: init-first-start-db
+# Filling database for first use
+init-first-start-db:
+	@python manage.py init_first_start
