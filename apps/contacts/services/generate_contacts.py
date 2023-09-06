@@ -26,14 +26,14 @@ def generate_contacts(amount: int) -> Iterator[Contact]:
 
 
 def add_random_groups(contact):
-    for _ in range(faker.random_int(min=1, max=4)):
-        add_group = GroupOfContact.objects.get(pk=faker.random_int(min=1, max=7))
+    for _ in range(faker.random_int(min=1, max=GroupOfContact.objects.count())):
+        add_group = GroupOfContact.objects.order_by("?").first()
         contact.groups_of_contact.add(add_group)
 
 
 def add_random_info_of_contact(contact):
-    for _ in range(faker.random_int(min=1, max=4)):
-        add_type = TypeOfContact.objects.get(pk=faker.random_int(min=1, max=5))
+    for _ in range(faker.random_int(min=1, max=TypeOfContact.objects.count())):
+        add_type = TypeOfContact.objects.order_by("?").first()
         InfoOfContact(
             type=add_type,
             contact=contact,
@@ -43,8 +43,8 @@ def add_random_info_of_contact(contact):
 
 def generate_info_of_contact() -> InfoOfContact:
     return InfoOfContact(
-        type=TypeOfContact.objects.get(pk=faker.random_int(min=1, max=5)),
-        contact=Contact.objects.get(pk=faker.random_int(min=1, max=20)),
+        type=TypeOfContact.objects.order_by("?").first(),
+        contact=Contact.objects.order_by("?").first(),
         value=faker.phone_number(),
     )
 
