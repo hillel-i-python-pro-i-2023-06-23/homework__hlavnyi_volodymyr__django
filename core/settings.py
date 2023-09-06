@@ -10,23 +10,33 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+import string
 from pathlib import Path
+
+import environ
+from django.utils.crypto import get_random_string
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 APPS_DIR = BASE_DIR.joinpath("apps")
 
-
+env = environ.FileAwareEnv()
+env.read_env(env_file=BASE_DIR.joinpath(".env"))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-0c!!r9=)^i)f5e8t!!@ui=o$s)cwd7dqfn9s5+=!hns+xb&#%9"
+# SECRET_KEY = "django-insecure-0c!!r9=)^i)f5e8t!!@ui=o$s)cwd7dqfn9s5+=!hns+xb&#%9"
+SECRET_KEY = env.str(
+    "DJANGO__SECRET_KEY", get_random_string(64, "".join([string.ascii_letters, string.digits, string.punctuation]))
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool("DJANGO__DEBUG", default=False)
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "0.0.0.0"]
+ALLOWED_HOSTS = env.list("DJANGO__ALLOWED_HOSTS", default=[])
+if DEBUG:
+    ALLOWED_HOSTS.extend(["localhost", "127.0.0.1", "0.0.0.0"])
 
 
 # Application definition
@@ -38,6 +48,7 @@ DJANGO_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.postgres",
 ]
 
 LOCAL_APPS = [
@@ -90,14 +101,32 @@ WSGI_APPLICATION = "core.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db" / "db.sqlite3",
+#     }
+# }
+
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "OPTIONS": {
+#             "service": "my_service",
+#             "passfile": ".my_pgpass",
+#         },
+#     }
+# }
+
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db" / "db.sqlite3",
-    }
+    "default": env.db_url_config(
+        env.str(
+            "DJANGO__DB_URL",
+            f'postgres://{env.str("POSTGRES_USER")}:{env.str("POSTGRES_PASSWORD")}'
+            f'@{env.str("POSTGRES_HOST")}:{env.str("POSTGRES_PORT")}/{env.str("POSTGRES_DB")}',
+        )
+    )
 }
-
-
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 

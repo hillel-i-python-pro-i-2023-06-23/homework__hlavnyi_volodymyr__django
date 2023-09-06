@@ -36,7 +36,7 @@ until postgres_ready; do
   sleep 1
 done
 
-echo >$2 'PostgreSQL is up - continuing...'
+echo >&2 'PostgreSQL is up - continuing...'
 
 # shellcheck disable=SC2086
 exec $cmd

@@ -1,7 +1,12 @@
+UID := $(shell id -u)
+export UID
+
+
 .PHONY: d-homework-i-run
 # Make all actions needed for run homework from zero.
 d-homework-i-run:
-	@bash ./scripts/d-homework-i-run.sh
+	@make init-configs &&\
+	make d-run
 
 
 .PHONY: d-homework-i-purge
@@ -13,14 +18,25 @@ d-homework-i-purge:
 .PHONY: init-configs
 # Configuration files initialization
 init-configs:
-	@cp docker-compose.override.dev.yml docker-compose.override.yml
+	@cp .env.homework .env && \
+	cp docker-compose.override.dev.yml docker-compose.override.yml
 
 
 .PHONY: d-run
 # Just run
 d-run:
 	@COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 \
-		docker compose up --build
+		COMPOSE_PROFILES=full_dev \
+		docker compose \
+			up --build
+
+.PHONY: d-run-i-local-dev
+# Just run
+d-run-i-local-dev:
+	@COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 \
+		COMPOSE_PROFILES=local_dev \
+		docker compose \
+			up --build
 
 .PHONY: d-stop
 # Stop services
@@ -39,7 +55,7 @@ d-purge:
 # Init environment for development
 init-dev:
 	@pip install --upgrade pip && \
-	pip install --requirement requirements.txt && \
+	pip install --requirement requirements/local.txt && \
 	pre-commit install
 
 .PHONY: homework-i-run

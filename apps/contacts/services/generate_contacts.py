@@ -4,7 +4,6 @@ from faker import Faker
 
 from apps.contacts.models import Contact, InfoOfContact, TypeOfContact, GroupOfContact
 
-
 faker = Faker()
 
 

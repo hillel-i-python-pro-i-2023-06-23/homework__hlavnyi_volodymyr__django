@@ -13,6 +13,8 @@ services:
       - .env
     depends_on:
       - postgres
+    profiles:
+      - full_dev
 
   postgres:
     image: postgres:15.4
@@ -21,4 +23,7 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
     volumes:
-      - postgres_data:/var/lib/postgresql/dat:rw
+      - postgres_data:/var/lib/postgresql/data:rw
+    profiles:
+        - full_dev
+        - local_dev

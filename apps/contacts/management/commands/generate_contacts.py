@@ -3,8 +3,8 @@ import logging
 from django.core.management.base import BaseCommand
 
 from apps.contacts.models import Contact
-from apps.contacts.services.generate_contacts import generate_contacts
 from apps.contacts.services.generate_contacts import add_random_groups, add_random_info_of_contact
+from apps.contacts.services.generate_contacts import generate_contacts
 
 
 class Command(BaseCommand):
