@@ -12,7 +12,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         id_number: int = options["id"]
-        flag_all: str = options["all"]
+        flag_all: bool = options["all"]
 
         logger = logging.getLogger("django")
 
