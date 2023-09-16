@@ -129,3 +129,8 @@ init-dev-i-generate-contacts:
 # Filling database for first use
 init-first-start-db:
 	@python manage.py init_first_start
+
+.PHONY: show-contacts-aggregation
+# Show Contacts Aggregation (for testing)
+show-contacts-aggregation:
+	@python manage.py show_aggregation_info

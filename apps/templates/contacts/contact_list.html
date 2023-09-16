@@ -6,6 +6,7 @@
     {% include "contacts/_contacts_navbar.html" %}
 
     <h1>Contacts</h1>
+    <h5>(Total: {{ object_list.count }})</h5>
 
     {% include "contacts/_contacts_list_base.html" with contacts_list=object_list %}
 {% endblock %}
