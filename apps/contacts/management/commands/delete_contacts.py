@@ -8,11 +8,11 @@ from apps.contacts.models import Contact
 class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument("--id", type=int, help="Which id contacts do you want to delete?", default=0)
-        parser.add_argument("--all", type=str, help="Delete ALL contacts from table!", default="")
+        parser.add_argument("--all", action="store_true", help="Delete ALL contacts from table!", default="")
 
     def handle(self, *args, **options):
-        id: int = options["id"]
-        flag_all: str = options["all"]
+        id_number: int = options["id"]
+        flag_all: bool = options["all"]
 
         logger = logging.getLogger("django")
 
@@ -21,10 +21,10 @@ class Command(BaseCommand):
 
         queryset_for_delete = queryset
 
-        if not id == 0:
-            total_deleted, details = queryset_for_delete.filter(pk=id).delete()
+        if id_number != 0:
+            total_deleted, details = queryset_for_delete.filter(pk=id_number).delete()
 
-        if flag_all == "ALL":
+        if flag_all is True:
             total_deleted, details = queryset_for_delete.all().delete()
 
         logger.info(f"Total deleted: {total_deleted}, details: {details}")

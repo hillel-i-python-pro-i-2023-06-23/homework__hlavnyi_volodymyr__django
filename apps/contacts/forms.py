@@ -4,6 +4,7 @@ from django.forms import ModelForm
 from apps.contacts.models import Contact
 from apps.contacts.models import InfoOfContact
 
+
 # from apps.contacts.models import TypeOfContact
 
 

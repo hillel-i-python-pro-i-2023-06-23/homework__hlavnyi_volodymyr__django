@@ -3,13 +3,13 @@ from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, DeleteView, UpdateView, DetailView
 
-# FormView)
-
 from apps.contacts.forms import GenerateForm, ContactDetailForm
 from apps.contacts.models import Contact, InfoOfContact
 from apps.contacts.services.delete_contacts import delete_contacts
-
 from apps.contacts.services.generate_and_save_contacts import generate_and_save_contacts
+
+
+# FormView)
 
 
 class ContactsListView(ListView):

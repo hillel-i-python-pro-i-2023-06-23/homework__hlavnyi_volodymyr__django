@@ -1,7 +1,6 @@
 import logging
 
 from apps.contacts.models import Contact
-
 from apps.contacts.services.generate_contacts import generate_contacts, add_random_groups, add_random_info_of_contact
 
 

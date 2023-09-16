@@ -1,0 +1,15 @@
+# Core for web.
+django==4.2.5
+
+# css bootstrap
+django-bootstrap-v5==1.0.11
+
+# For name generation.
+faker==19.3.1
+
+# environment variables
+django-environ==0.11.2
+
+# connector to PostgreSQL
+psycopg==3.1.10
+
