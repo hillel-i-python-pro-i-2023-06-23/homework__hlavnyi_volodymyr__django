@@ -5,7 +5,7 @@ django==4.2.5
 django-bootstrap-v5==1.0.11
 
 # For name generation.
-faker==19.3.1
+faker==19.6.1
 
 # environment variables
 django-environ==0.11.2
