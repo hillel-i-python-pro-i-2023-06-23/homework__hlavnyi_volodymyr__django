@@ -89,6 +89,16 @@ migrations:
 migrate:
 	@python manage.py migrate
 
+.PHONY: homework-i-run-generate-contacts
+# Run homework with generate 15 contacts.
+homework-i-run-generate-contacts:
+	@bash ./scripts/d-homework-i-run-contacts-generate.sh
+
+.PHONY: homework-i-run-delete-contacts-all
+# Run homework with delete all contacts.
+homework-i-run-delete-contacts-all:
+	@bash ./scripts/d-homework-i-run-contacts-delete-all.sh
+
 .PHONY: init-dev-i-migrate-all
 # Make migrations and make migrate together
 init-dev-i-migrate-all:
