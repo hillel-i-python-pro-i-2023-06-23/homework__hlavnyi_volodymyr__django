@@ -32,3 +32,22 @@ def get_contacts_type_grouping():
     )
 
     return data__set
+
+
+def get_for_contact_by_id_grouping(pk):
+    """
+    Get contacts grouping by type name
+    """
+    queryset = InfoOfContact.objects.filter(contact_id=pk)
+    data__set = (
+        queryset.annotate(type_name=models.F("type__name"))
+        .values("type_name")
+        .annotate(
+            count=models.Count("id"),
+        )
+        .aggregate(
+            models.Sum("count"),
+        )
+    )
+
+    return data__set
