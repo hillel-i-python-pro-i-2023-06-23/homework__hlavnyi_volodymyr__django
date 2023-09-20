@@ -5,7 +5,7 @@ from django.views.generic import CreateView, ListView, DeleteView, UpdateView, D
 
 from apps.contacts.forms import GenerateForm, ContactDetailForm
 from apps.contacts.models import Contact, InfoOfContact
-from apps.contacts.services.aggregation import get_all_contacts_count_total_info
+from apps.contacts.services.aggregation import get_all_contacts_count_total_info, get_base_info
 from apps.contacts.services.delete_contacts import delete_contacts
 from apps.contacts.services.generate_and_save_contacts import generate_and_save_contacts
 
@@ -20,8 +20,9 @@ class ContactsListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        # context["info_aggrigate"] = Contact.objects.all()
-        context["info_type_count"] = get_all_contacts_count_total_info()
+        context["extra_info_1"] = get_base_info()
+        context["extra_info_2"] = get_base_info()
+        context["extra_info_type_count_by_id_contact"] = get_all_contacts_count_total_info()
         return context
 
 

@@ -4,13 +4,14 @@ from django.core.management.base import BaseCommand
 
 # from django.db import models
 
-from apps.contacts.models import Contact, GroupOfContact, TypeOfContact, InfoOfContact
+from apps.contacts.models import Contact, TypeOfContact
 from apps.contacts.services.aggregation import (
     get_contacts_group_grouping,
     get_contacts_type_grouping,
     get_for_contact_type_by_id_grouping,
     get_for_contact_count_total_info,
     get_all_contacts_count_total_info,
+    get_base_info,
 )
 
 
@@ -18,10 +19,9 @@ def show_aggregation_info():
     logger = logging.getLogger("django")
     logger.info("start")
 
-    logger.info(f"contacts: {Contact.objects.count()}")
-    logger.info(f"groups of contacts: {GroupOfContact.objects.count()}")
-    logger.info(f"types of contacts: {TypeOfContact.objects.count()}")
-    logger.info(f"info of contacts: {InfoOfContact.objects.count()}")
+    logger.info("Contacts base info =============================")
+    data_set = get_base_info()
+    logger.info(f"Total: {data_set}")
 
     logger.info("Contacts Group grouping =============================")
     data__grouping = get_contacts_group_grouping()

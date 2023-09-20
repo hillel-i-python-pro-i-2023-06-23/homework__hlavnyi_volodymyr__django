@@ -1,5 +1,19 @@
-from apps.contacts.models import Contact, InfoOfContact
+from apps.contacts.models import Contact, GroupOfContact, TypeOfContact, InfoOfContact
 from django.db import models
+
+
+def get_base_info():
+    """
+    Get base info about contacts
+    """
+    data = {
+        "Contacts": Contact.objects.count(),
+        "Groups": GroupOfContact.objects.count(),
+        "Types": TypeOfContact.objects.count(),
+        "Info": InfoOfContact.objects.count(),
+    }
+
+    return data
 
 
 def get_contacts_group_grouping():

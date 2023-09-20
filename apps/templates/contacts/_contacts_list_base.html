@@ -20,11 +20,11 @@
             <td>{{ contact.date_of_birth }}</td>
             <td>{{ contact.age }}</td>
             <td>{{ contact.groups_of_contact_amount }}</td>
-            {% for type_count in info_type_count %}
+            {% for type_count in extra_info_type_count_by_id_contact %}
                 {% if type_count.contact_id == contact.pk %}
-                        <td>
+                    <td>
                         {{ type_count.count }}
-                        </td>
+                    </td>
                 {% endif %}
             {% endfor %}
             <td>{{ contact.created_at }}</td>
@@ -32,13 +32,11 @@
             <td>
                 <a href="{% url 'contacts:contacts_detail' contact.pk %}">
                     <button class="btn btn-outline-primary" type="button">
-                        {% for type_count in info_type_count %}
-                {% if type_count.contact_id == contact.pk %}
-
-                        Detail ({{ type_count.count }})
-
-                {% endif %}
-            {% endfor %}
+                        {% for type_count in extra_info_type_count_by_id_contact %}
+                            {% if type_count.contact_id == contact.pk %}
+                                Detail ({{ type_count.count }})
+                            {% endif %}
+                        {% endfor %}
 
                     </button>
                 </a>
