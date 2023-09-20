@@ -43,3 +43,7 @@ class ContactDetailForm(forms.ModelForm):
             "type",
             "value",
         )
+
+
+class StatisticsForm(forms.Form):
+    pass
