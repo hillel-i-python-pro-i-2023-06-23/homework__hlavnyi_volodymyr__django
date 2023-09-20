@@ -111,7 +111,7 @@ def get_most_frequent_contacts_name():
     data__set = (
         queryset.values("name")
         .annotate(
-            count=models.Count("name"),
+            count=models.Sum("name"),
         )
         .order_by("count")
     )
