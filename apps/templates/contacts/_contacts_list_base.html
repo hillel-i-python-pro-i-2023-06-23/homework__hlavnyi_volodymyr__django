@@ -19,11 +19,13 @@
             <td>{{ contact.name }}</td>
             <td>{{ contact.date_of_birth }}</td>
             <td>{{ contact.age }}</td>
-            <td>{{ contact.groups_of_contact_amount }}</td>
+            <td>
+                <p class="text-center">{{ contact.groups_of_contact_amount }}</p>
+            </td>
             {% for type_count in extra_info_type_count_by_id_contact %}
                 {% if type_count.contact_id == contact.pk %}
                     <td>
-                        {{ type_count.count }}
+                        <p class="text-center">{{ type_count.count }}</p>
                     </td>
                 {% endif %}
             {% endfor %}

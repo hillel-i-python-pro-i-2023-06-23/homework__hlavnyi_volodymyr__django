@@ -5,8 +5,23 @@
 
     {% include "contacts/_contacts_navbar.html" %}
 
-    <h1>Contacts</h1>
-    <h5>Total: {{ extra_info_1 }}</h5>
+    <h2>Contacts</h2>
+    <h6>
+    <p class="fw-bold">
+        Total by groups: &nbsp;
+        {% for item in extra_info_1 %}
+         {{ item.group_name }}:{{ item.count }} &nbsp;&nbsp;
+        {% endfor %}
+    </p>
+    </h6>
+    <h6>
+    <p class="fw-bold">
+        Total by types: &nbsp;
+        {% for item in extra_info_2 %}
+            {{ item.group_name }}:{{ item.count }} &nbsp;&nbsp;
+        {% endfor %}
+    </p>
+    </h6>
 
     {% include "contacts/_contacts_list_base.html" with contacts_list=object_list extra_info_type_count_by_id_contact=extra_info_type_count_by_id_contact%}
 {% endblock %}

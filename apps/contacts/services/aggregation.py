@@ -6,12 +6,12 @@ def get_base_info():
     """
     Get base info about contacts
     """
-    data = {
-        "Contacts": Contact.objects.count(),
-        "Groups": GroupOfContact.objects.count(),
-        "Types": TypeOfContact.objects.count(),
-        "Info": InfoOfContact.objects.count(),
-    }
+    data = [
+        {"group_name": "Contacts", "count": Contact.objects.count()},
+        {"group_name": "Groups", "count": GroupOfContact.objects.count()},
+        {"group_name": "Types", "count": TypeOfContact.objects.count()},
+        {"group_name": "Details", "count": InfoOfContact.objects.count()},
+    ]
 
     return data
 
