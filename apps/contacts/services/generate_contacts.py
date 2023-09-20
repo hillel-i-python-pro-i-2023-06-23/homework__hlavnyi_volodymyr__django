@@ -8,11 +8,7 @@ faker = Faker()
 
 
 def generate_contact() -> Contact:
-    if faker.pybool(1):
-        date_of_birth = None
-    else:
-        date_of_birth = faker.date_of_birth()
-
+    date_of_birth = None if faker.pybool(1) else faker.date_of_birth()
     return Contact(
         name=faker.first_name(),
         date_of_birth=date_of_birth,

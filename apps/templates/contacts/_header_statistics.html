@@ -1,0 +1,24 @@
+<h6>
+
+    <p class="fw-bold">
+        Total by Tables: &nbsp;
+        {% for item in extra_info_1 %}
+            {{ item.group_name }}:{{ item.count }} &nbsp;&nbsp;
+        {% endfor %}
+    </p>
+
+    <p class="fw-bold">
+        Total by Groups: &nbsp;
+        {% for item in extra_info_2 %}
+            {{ item.group_name }}:{{ item.count }} &nbsp;&nbsp;
+        {% endfor %}
+    </p>
+
+    <p class="fw-bold">
+        Total by Types: &nbsp;
+        {% for item in extra_info_3 %}
+            {{ item.group_name }}:{{ item.count }} &nbsp;&nbsp;
+        {% endfor %}
+    </p>
+
+</h6>

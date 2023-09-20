@@ -4,14 +4,17 @@ from django.core.management.base import BaseCommand
 
 # from django.db import models
 
-from apps.contacts.models import TypeOfContact
 from apps.contacts.services.aggregation import (
     get_contacts_group_grouping,
     get_contacts_type_grouping,
     get_base_info,
+    get_most_frequent_contacts_name,
+    get_all_contacts_count_total_info,
 )
 
 
+# This procedure used for test purposes to
+# show aggregation info about contacts
 def show_aggregation_info():
     logger = logging.getLogger("django")
     logger.info("start")
@@ -29,11 +32,17 @@ def show_aggregation_info():
         logger.info(f"{item=}")
 
     logger.info("Contacts Type grouping =============================")
-    data__set = get_contacts_type_grouping()[:5]
+    data__set = get_contacts_type_grouping()
     for item in data__set:
-        name_type = TypeOfContact.objects.get(pk=item["type"]).name
-        logger.info(f"{name_type=} count={item['count']}")
+        # name_type = TypeOfContact.objects.get(pk=item["type"]).name
+        logger.info(f"{item['group_name']} count={item['count']}")
     logger.info(f"Total type of detailed data of Contacts is {data__set.count()}")
+    logger.info("===")
+    dic_set = []
+    for item in get_all_contacts_count_total_info():
+        dic_set.append(item["contact_id"])
+    logger.info(dic_set)
+    logger.info("===")
 
     # logger.info("Contact by id count info data =============================")
     # query_contacts = Contact.objects.all()[:5]
@@ -56,6 +65,11 @@ def show_aggregation_info():
     # query_info = get_all_contacts_count_total_info()[:5]
     # for item in query_info:
     #     logger.info(f"{item}")
+
+    logger.info("Most Frequent Contacts Name ============================")
+    query_contacts = get_most_frequent_contacts_name()[:3]
+    for item in query_contacts:
+        logger.info(f"Most frequent contacts name is {item=}")
 
     logger.info("end")
 

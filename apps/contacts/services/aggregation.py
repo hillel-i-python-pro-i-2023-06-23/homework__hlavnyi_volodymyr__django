@@ -38,14 +38,21 @@ def get_contacts_type_grouping():
     """
     queryset = InfoOfContact.objects.all()
     data__set = (
-        queryset.annotate(type_name=models.F("type"))
-        .values("type")
+        queryset.annotate(group_name=models.F("type__name"))
+        .values("group_name")
         .annotate(
-            count=models.Count("type"),
+            count=models.Count("group_name"),
         )
     )
 
     return data__set
+
+
+def convert_to_dic_get_all_contacts_count_total_info():
+    dic_set = []
+    for item in get_all_contacts_count_total_info():
+        dic_set.append(item["contact_id"])
+    return dic_set
 
 
 def get_for_contact_type_by_id_grouping(pk):
@@ -91,6 +98,22 @@ def get_all_contacts_count_total_info():
             contact_name=models.F("contact__name"),
             count=models.Count("id"),
         )
+    )
+
+    return data__set
+
+
+def get_most_frequent_contacts_name():
+    """
+    Get contacts grouping by id and return total count
+    """
+    queryset = Contact.objects.all()
+    data__set = (
+        queryset.values("name")
+        .annotate(
+            count=models.Count("name"),
+        )
+        .order_by("count")
     )
 
     return data__set

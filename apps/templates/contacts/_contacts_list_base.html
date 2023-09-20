@@ -22,24 +22,33 @@
             <td>
                 <p class="text-center">{{ contact.groups_of_contact_amount }}</p>
             </td>
-            {% for type_count in extra_info_type_count_by_id_contact %}
-                {% if type_count.contact_id == contact.pk %}
-                    <td>
-                        <p class="text-center">{{ type_count.count }}</p>
-                    </td>
-                {% endif %}
-            {% endfor %}
+            {% if contact.pk not in extra_info_type_count_by_id_contact_list_id %}
+                <td>
+                    <p class="text-center">Empty</p>
+                </td>
+            {% else %}
+                {% for type_count in extra_info_type_count_by_id_contact %}
+                    {% if type_count.contact_id == contact.pk %}
+                        <td>
+                            <p class="text-center">{{ type_count.count }}</p>
+                        </td>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
             <td>{{ contact.created_at }}</td>
             <td>{{ contact.modified_at }}</td>
             <td>
                 <a href="{% url 'contacts:contacts_detail' contact.pk %}">
                     <button class="btn btn-outline-primary" type="button">
-                        {% for type_count in extra_info_type_count_by_id_contact %}
-                            {% if type_count.contact_id == contact.pk %}
-                                Detail ({{ type_count.count }})
-                            {% endif %}
-                        {% endfor %}
-
+                        {% if contact.pk not in extra_info_type_count_by_id_contact_list_id %}
+                            Detail (Empty)
+                        {% else %}
+                            {% for type_count in extra_info_type_count_by_id_contact %}
+                                {% if type_count.contact_id == contact.pk %}
+                                    Detail ({{ type_count.count }})
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
                     </button>
                 </a>
             </td>
