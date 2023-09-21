@@ -1,3 +1,5 @@
+# Docs: https://docs.djangoproject.com/en/3.2/topics/db/aggregation/
+
 from apps.contacts.models import Contact, GroupOfContact, TypeOfContact, InfoOfContact
 from django.db import models
 
@@ -108,12 +110,52 @@ def get_most_frequent_contacts_name():
     Get contacts grouping by id and return total count
     """
     queryset = Contact.objects.all()
-    data__set = (
-        queryset.values("name")
-        .annotate(
-            count=models.Sum("name"),
-        )
-        .order_by("count")
+    data__set = queryset.annotate(
+        name_contact=models.F("name"),
+        count_name=models.Count("name"),
+    ).aggregate(models.Sum("count_name"))
+
+    return data__set
+
+
+def get_age_from_date_of_birth(date_of_birth):
+    """
+    Get age from date of birth
+    """
+    from datetime import date
+
+    today = date.today()
+    if date_of_birth:
+        return today.year - date_of_birth.year - ((today.month, today.day) < (date_of_birth.month, date_of_birth.day))
+    return None
+
+
+def get_max_min_age_contact():
+    """
+    Get Max / Min contacts
+    """
+    queryset = Contact.objects.all()
+    data__set = queryset.aggregate(
+        date_of_birth_min=models.Max(
+            models.ExpressionWrapper(models.F("date_of_birth"), output_field=models.DateField())
+        ),
+        date_of_birth_max=models.Min(
+            models.ExpressionWrapper(models.F("date_of_birth"), output_field=models.DateField())
+        ),
     )
+
+    data__set["age_max"] = get_age_from_date_of_birth(data__set["date_of_birth_max"])
+    data__set["age_min"] = get_age_from_date_of_birth(data__set["date_of_birth_min"])
+
+    # data__set_avg = (queryset
+    #         .aggregate(
+    #         date_of_birth_avg=models.Avg(
+    #             models.ExpressionWrapper(models.F('date_of_birth'),
+    #                                         output_field=models.IntegerField())),
+    #     )
+    # )
+
+    data__set["age_avg"] = (data__set["age_max"] - data__set["age_min"]) / 2
+    # get_age_from_date_of_birth(data__set_avg["date_of_birth_avg"])
 
     return data__set

@@ -9,6 +9,7 @@ from apps.contacts.services.aggregation import (
     #  get_contacts_type_grouping,
     get_base_info,
     get_most_frequent_contacts_name,
+    get_max_min_age_contact,
     # get_all_contacts_count_total_info,
 )
 
@@ -67,9 +68,16 @@ def show_aggregation_info():
     #     logger.info(f"{item}")
 
     logger.info("Most Frequent Contacts Name ============================")
-    query_contacts = get_most_frequent_contacts_name()[:10]
-    for item in query_contacts:
-        logger.info(f"Most frequent contacts name is {item=}")
+    query_contacts = get_most_frequent_contacts_name()
+    logger.info(f"{query_contacts=}")
+    # for item in query_contacts:
+    #    logger.info(f"Most frequent contacts name is {item=}")
+
+    logger.info("Min Max Age Contact ============================")
+    query_min_max = get_max_min_age_contact()
+    logger.info(f"{query_min_max=}")
+    # for item in query_min_max:
+    #    logger.info(f"{item=}")
 
     logger.info("end")
 
