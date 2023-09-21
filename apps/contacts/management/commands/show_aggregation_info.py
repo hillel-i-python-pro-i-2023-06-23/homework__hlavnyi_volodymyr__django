@@ -70,8 +70,8 @@ def show_aggregation_info():
     logger.info("Most Frequent Contacts Name ============================")
     query_contacts = get_most_frequent_contacts_name()
     logger.info(f"{query_contacts=}")
-    # for item in query_contacts:
-    #    logger.info(f"Most frequent contacts name is {item=}")
+    for item in query_contacts:
+        logger.info(f"Most frequent contacts name is {item=}")
 
     logger.info("Min Max Age Contact ============================")
     query_min_max = get_max_min_age_contact()

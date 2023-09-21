@@ -110,10 +110,14 @@ def get_most_frequent_contacts_name():
     Get contacts grouping by id and return total count
     """
     queryset = Contact.objects.all()
-    data__set = queryset.annotate(
-        name_contact=models.F("name"),
-        count_name=models.Count("name"),
-    ).aggregate(models.Sum("count_name"))
+    data__set = (
+        queryset.annotate(
+            name_contact=models.F("name"),
+            count_name=models.Count("name"),
+        )
+        .values("name_contact", "count_name")
+        .order_by("-count_name")
+    )
 
     return data__set
 
