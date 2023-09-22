@@ -109,17 +109,24 @@ def get_most_frequent_contacts_name():
     """
     Get contacts grouping by id and return total count
     """
-    queryset = Contact.objects.all()
+    queryset_contacts = Contact.objects.all()
+    # above_5 = Count("book", filter=Q(book__rating__gt=5))
+    # below_5 = Count("book", filter=Q(book__rating__lte=5))
+    # pubs = Publisher.objects.annotate(below_5=below_5).annotate(above_5=above_5)
+    # above_2 = models.Count("group_name", filter=models.Q(count>1))
     data__set = (
-        queryset.annotate(
-            name_contact=models.F("name"),
-            count_name=models.Count("name"),
+        queryset_contacts.annotate(group_name=models.F("name"))
+        .values("group_name")
+        .annotate(
+            count=models.Count("group_name"),
         )
-        .values("name_contact", "count_name")
-        .order_by("-count_name")
+        # .annotate(
+        #    count_ab2=models.Count("group_name", filter=models.Q(count__rating__gt=2)),
+        # )
+        .order_by("-count")
     )
 
-    return data__set
+    return data__set[:3]
 
 
 def get_age_from_date_of_birth(date_of_birth):
@@ -131,7 +138,7 @@ def get_age_from_date_of_birth(date_of_birth):
     today = date.today()
     if date_of_birth:
         return today.year - date_of_birth.year - ((today.month, today.day) < (date_of_birth.month, date_of_birth.day))
-    return None
+    return 0
 
 
 def get_max_min_age_contact():

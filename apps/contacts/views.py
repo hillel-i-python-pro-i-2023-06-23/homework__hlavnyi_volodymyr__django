@@ -12,6 +12,7 @@ from apps.contacts.services.aggregation import (
     get_contacts_type_grouping,
     convert_to_dic_get_all_contacts_count_total_info,
     get_max_min_age_contact,
+    get_most_frequent_contacts_name,
 )
 from apps.contacts.services.delete_contacts import delete_contacts
 from apps.contacts.services.generate_and_save_contacts import generate_and_save_contacts
@@ -31,6 +32,7 @@ class ContactsListView(ListView):
         context["extra_info_2"] = list(get_contacts_group_grouping())
         context["extra_info_3"] = get_contacts_type_grouping()
         context["extra_info_4"] = get_max_min_age_contact()
+        context["extra_info_5"] = get_most_frequent_contacts_name()
         context["extra_info_type_count_by_id_contact"] = get_all_contacts_count_total_info()
         context["extra_info_type_count_by_id_contact_list_id"] = convert_to_dic_get_all_contacts_count_total_info()
         return context
@@ -99,6 +101,7 @@ def generate_contacts_view(request):
             extra_info_2=list(get_contacts_group_grouping()),
             extra_info_3=get_contacts_type_grouping(),
             extra_info_4=get_max_min_age_contact(),
+            extra_info_5=get_most_frequent_contacts_name(),
             extra_info_type_count_by_id_contact=get_all_contacts_count_total_info(),
             extra_info_type_count_by_id_contact_list_id=list(get_all_contacts_count_total_info().values("contact_id")),
         ),
