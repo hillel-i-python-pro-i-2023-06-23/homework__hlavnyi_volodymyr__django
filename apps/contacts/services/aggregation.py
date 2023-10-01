@@ -2,9 +2,78 @@
 
 from apps.contacts.models import Contact, GroupOfContact, TypeOfContact, InfoOfContact
 from django.db import models
+import logging
 
 
-def get_base_info():
+# This procedure used for test purposes to
+# show aggregation info about contacts
+def show_aggregation_info():
+    logger = logging.getLogger("django")
+    logger.info("start")
+
+    logger.info("Contacts base info =============================")
+    data_set = get_info_about_all_group_count()
+    for item in data_set:
+        logger.info(f"{item=}")
+    # logger.info(f"Total: {data_set}")
+
+    logger.info("Contacts Group grouping =============================")
+    data__grouping = get_contacts_group_grouping()
+
+    for item in data__grouping:
+        logger.info(f"{item=}")
+
+    logger.info("Contacts Type grouping =============================")
+    data__set = get_contacts_type_grouping()
+    for item in data__set:
+        # name_type = TypeOfContact.objects.get(pk=item["type"]).name
+        logger.info(f"{item['group_name']} count={item['count']}")
+    logger.info(f"Total type of detailed data of Contacts is {data__set.count()}")
+    logger.info("===")
+    dic_set = []
+    for item in get_all_contacts_count_total_info():
+        dic_set.append(item["contact_id"])
+    logger.info(dic_set)
+    logger.info("===")
+
+    logger.info("Contact by id count info data =============================")
+    query_contacts = Contact.objects.all()[:5]
+    for cont in query_contacts:
+        data__set = get_for_contact_type_by_id_grouping(cont.id)
+        logger.info(f"Contact={cont.name}, count={data__set.count()}")
+        for item in data__set:
+            logger.info(f"{item}")
+        #    name_type = TypeOfContact.objects.get(pk=item["type"]).name
+        #    logger.info(f"Contact={cont.name}, name_type={name_type}, count={item['count']}")
+
+    logger.info("Contact by id count info data =============================")
+    query_contacts = Contact.objects.all()[:5]
+    for cont in query_contacts:
+        data__set = get_for_contact_count_total_info(cont.id)
+        logger.info(f"Contact={cont.name}, count={data__set.count()}")
+        # for item in data__set:
+        #    logger.info(f"{item}")
+
+    query_info = get_all_contacts_count_total_info()[:5]
+    for item in query_info:
+        logger.info(f"{item}")
+
+    logger.info("Most Frequent Contacts Name ============================")
+    query_contacts = get_most_frequent_contacts_name()
+    logger.info(f"{query_contacts=}")
+    for item in query_contacts:
+        logger.info(f"Most frequent contacts name is {item=}")
+
+    logger.info("Min Max Age Contact ============================")
+    query_min_max = get_max_min_age_contact()
+    logger.info(f"{query_min_max=}")
+    # for item in query_min_max:
+    #    logger.info(f"{item=}")
+
+    logger.info("end")
+
+
+def get_info_about_all_group_count():
     """
     Get base info about contacts
     """
@@ -23,7 +92,7 @@ def get_contacts_group_grouping():
     Get contacts grouping by group name
     """
     queryset_contacts = Contact.objects.all()
-    data__grouping = (
+    data = (
         queryset_contacts.annotate(group_name=models.F("groups_of_contact__name"))
         .values("group_name")
         .annotate(
@@ -31,7 +100,7 @@ def get_contacts_group_grouping():
         )
     )
 
-    return data__grouping
+    return data
 
 
 def get_contacts_type_grouping():
@@ -39,7 +108,7 @@ def get_contacts_type_grouping():
     Get contacts grouping by type name
     """
     queryset = InfoOfContact.objects.all()
-    data__set = (
+    data = (
         queryset.annotate(group_name=models.F("type__name"))
         .values("group_name")
         .annotate(
@@ -47,14 +116,14 @@ def get_contacts_type_grouping():
         )
     )
 
-    return data__set
+    return data
 
 
 def convert_to_dic_get_all_contacts_count_total_info():
-    dic_set = []
+    dic = []
     for item in get_all_contacts_count_total_info():
-        dic_set.append(item["contact_id"])
-    return dic_set
+        dic.append(item["contact_id"])
+    return dic
 
 
 def get_for_contact_type_by_id_grouping(pk):
@@ -62,7 +131,7 @@ def get_for_contact_type_by_id_grouping(pk):
     Get contacts grouping by type name
     """
     queryset = InfoOfContact.objects.filter(contact_id=pk)
-    data__set = (
+    data = (
         queryset.annotate(
             type_name=models.F("type__name"),
         )
@@ -73,7 +142,7 @@ def get_for_contact_type_by_id_grouping(pk):
         )
     )
 
-    return data__set
+    return data
 
 
 def get_for_contact_count_total_info(pk):
@@ -81,11 +150,11 @@ def get_for_contact_count_total_info(pk):
     Get contacts grouping by id and return total count
     """
     queryset = InfoOfContact.objects.filter(contact_id=pk)
-    data__set = queryset.annotate(
+    data = queryset.annotate(
         count=models.Count("id"),
     )
 
-    return data__set
+    return data
 
 
 def get_all_contacts_count_total_info():
@@ -93,7 +162,7 @@ def get_all_contacts_count_total_info():
     Get contacts grouping by id and return total count
     """
     queryset = InfoOfContact.objects.all()
-    data__set = (
+    data = (
         queryset.values("contact_id")
         .order_by("contact_id")
         .annotate(
@@ -102,7 +171,7 @@ def get_all_contacts_count_total_info():
         )
     )
 
-    return data__set
+    return data
 
 
 def get_most_frequent_contacts_name():
@@ -110,23 +179,16 @@ def get_most_frequent_contacts_name():
     Get contacts grouping by id and return total count
     """
     queryset_contacts = Contact.objects.all()
-    # above_5 = Count("book", filter=Q(book__rating__gt=5))
-    # below_5 = Count("book", filter=Q(book__rating__lte=5))
-    # pubs = Publisher.objects.annotate(below_5=below_5).annotate(above_5=above_5)
-    # above_2 = models.Count("group_name", filter=models.Q(count>1))
-    data__set = (
+    data = (
         queryset_contacts.annotate(group_name=models.F("name"))
         .values("group_name")
         .annotate(
             count=models.Count("group_name"),
         )
-        # .annotate(
-        #    count_ab2=models.Count("group_name", filter=models.Q(count__rating__gt=2)),
-        # )
         .order_by("-count")
     )
 
-    return data__set[:3]
+    return data[:3]
 
 
 def get_age_from_date_of_birth(date_of_birth):
@@ -146,7 +208,7 @@ def get_max_min_age_contact():
     Get Max / Min contacts
     """
     queryset = Contact.objects.all()
-    data__set = queryset.aggregate(
+    data = queryset.aggregate(
         date_of_birth_min=models.Max(
             models.ExpressionWrapper(models.F("date_of_birth"), output_field=models.DateField())
         ),
@@ -155,18 +217,18 @@ def get_max_min_age_contact():
         ),
     )
 
-    data__set["age_max"] = get_age_from_date_of_birth(data__set["date_of_birth_max"])
-    data__set["age_min"] = get_age_from_date_of_birth(data__set["date_of_birth_min"])
+    data["age_max"] = get_age_from_date_of_birth(data["date_of_birth_max"])
+    data["age_min"] = get_age_from_date_of_birth(data["date_of_birth_min"])
 
-    # data__set_avg = (queryset
-    #         .aggregate(
-    #         date_of_birth_avg=models.Avg(
-    #             models.ExpressionWrapper(models.F('date_of_birth'),
-    #                                         output_field=models.IntegerField())),
-    #     )
+    # data_avg = queryset.aggregate(
+    #     date_of_birth_avg=models.Avg(
+    #         models.ExpressionWrapper(models.F("date_of_birth"), output_field=models.DateField())
+    #     ),
     # )
+    #
+    data["age_avg"] = (data["age_max"] - data["age_min"]) / 2
+    # data["age_avg"] = data_avg["date_of_birth_avg"]
+    # # get_age_from_date_of_birth(data__set_avg["date_of_birth_avg"])
+    # .annotate(avg=Cast(F('count_answers'), FloatField()) / Cast(F('count_gym'), FloatField()))
 
-    data__set["age_avg"] = (data__set["age_max"] - data__set["age_min"]) / 2
-    # get_age_from_date_of_birth(data__set_avg["date_of_birth_avg"])
-
-    return data__set
+    return data

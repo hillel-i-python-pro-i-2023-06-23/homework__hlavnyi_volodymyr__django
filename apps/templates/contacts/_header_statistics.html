@@ -12,37 +12,37 @@
 
                 <p class="fw-bold">
                     Total by Tables: &nbsp;
-                    {% for item in extra_info_1 %}
+                    {% for item in info_about_all_group_count_line_1_header %}
                         {{ item.group_name }}:{{ item.count }} &nbsp;&nbsp;
                     {% endfor %}
                 </p>
 
                 <p class="fw-bold">
                     Total by Groups: &nbsp;
-                    {% for item in extra_info_2 %}
+                    {% for item in info_contacts_group_grouping_line_2_header %}
                         {{ item.group_name }}:{{ item.count }} &nbsp;&nbsp;
                     {% endfor %}
                 </p>
 
                 <p class="fw-bold">
                     Total by Types: &nbsp;
-                    {% for item in extra_info_3 %}
+                    {% for item in info_contacts_type_grouping_line_3_header %}
                         {{ item.group_name }}:{{ item.count }} &nbsp;&nbsp;
                     {% endfor %}
                 </p>
 
                 <p class="fw-bold">
                     Age (years): &nbsp;
-                    Max: {{ extra_info_4.age_max }}
+                    Max: {{ info_max_min_age_contact_line_4_header.age_max }}
                     &nbsp;&nbsp;
-                    Min: {{ extra_info_4.age_min }}
+                    Min: {{ info_max_min_age_contact_line_4_header.age_min }}
                     &nbsp;&nbsp;
-                    Avg: {{ extra_info_4.age_avg }}
+                    Avg: {{ info_max_min_age_contact_line_4_header.age_avg }}
                 </p>
 
                 <p class="fw-bold">
                     Most frequency name (top 3): &nbsp;
-                    {% for item in extra_info_5 %}
+                    {% for item in info_most_frequent_contacts_name_line_5_header %}
                         {{ item.group_name }}:{{ item.count }} &nbsp;&nbsp;
                     {% endfor %}
                 </p>

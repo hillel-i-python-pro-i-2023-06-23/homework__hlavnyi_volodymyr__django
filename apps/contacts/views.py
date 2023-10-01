@@ -7,18 +7,15 @@ from apps.contacts.forms import GenerateForm, ContactDetailForm
 from apps.contacts.models import Contact, InfoOfContact
 from apps.contacts.services.aggregation import (
     get_all_contacts_count_total_info,
-    get_base_info,
     get_contacts_group_grouping,
     get_contacts_type_grouping,
     convert_to_dic_get_all_contacts_count_total_info,
     get_max_min_age_contact,
     get_most_frequent_contacts_name,
+    get_info_about_all_group_count,
 )
 from apps.contacts.services.delete_contacts import delete_contacts
 from apps.contacts.services.generate_and_save_contacts import generate_and_save_contacts
-
-
-# FormView)
 
 
 class ContactsListView(ListView):
@@ -28,13 +25,13 @@ class ContactsListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        context["extra_info_1"] = get_base_info()
-        context["extra_info_2"] = list(get_contacts_group_grouping())
-        context["extra_info_3"] = get_contacts_type_grouping()
-        context["extra_info_4"] = get_max_min_age_contact()
-        context["extra_info_5"] = get_most_frequent_contacts_name()
-        context["extra_info_type_count_by_id_contact"] = get_all_contacts_count_total_info()
-        context["extra_info_type_count_by_id_contact_list_id"] = convert_to_dic_get_all_contacts_count_total_info()
+        context["info_about_all_group_count_line_1_header"] = get_info_about_all_group_count()
+        context["info_contacts_group_grouping_line_2_header"] = list(get_contacts_group_grouping())
+        context["info_contacts_type_grouping_line_3_header"] = get_contacts_type_grouping()
+        context["info_max_min_age_contact_line_4_header"] = get_max_min_age_contact()
+        context["info_most_frequent_contacts_name_line_5_header"] = get_most_frequent_contacts_name()
+        context["info_type_count_by_id_contact"] = get_all_contacts_count_total_info()
+        context["info_type_count_by_id_contact_list_id"] = convert_to_dic_get_all_contacts_count_total_info()
         return context
 
 
@@ -97,13 +94,13 @@ def generate_contacts_view(request):
         context=dict(
             contacts_list=Contact.objects.all(),
             form=form,
-            extra_info_1=get_base_info(),
-            extra_info_2=list(get_contacts_group_grouping()),
-            extra_info_3=get_contacts_type_grouping(),
-            extra_info_4=get_max_min_age_contact(),
-            extra_info_5=get_most_frequent_contacts_name(),
-            extra_info_type_count_by_id_contact=get_all_contacts_count_total_info(),
-            extra_info_type_count_by_id_contact_list_id=list(get_all_contacts_count_total_info().values("contact_id")),
+            info_about_all_group_count_line_1_header=get_info_about_all_group_count(),
+            info_contacts_group_grouping_line_2_header=list(get_contacts_group_grouping()),
+            info_contacts_type_grouping_line_3_header=get_contacts_type_grouping(),
+            info_max_min_age_contact_line_4_header=get_max_min_age_contact(),
+            info_most_frequent_contacts_name_line_5_header=get_most_frequent_contacts_name(),
+            info_type_count_by_id_contact=get_all_contacts_count_total_info(),
+            info_type_count_by_id_contact_list_id=list(get_all_contacts_count_total_info().values("contact_id")),
         ),
     )
 
@@ -118,26 +115,7 @@ class ContactDetailCreateView(DetailView):
         "value",
     )
 
-    # readonly_fields = ("contact",)
-
-    # def get_initial(self):
-    #    initial = super().get_initial()
-    # initial["contact"] = self.kwargs["pk"]
-    # initial["instance"] = InfoOfContact.objects.get(contact_id=self.kwargs["pk"])
-    # initial["contact"] = Contact.objects.get(pk=self.kwargs["pk"])
-    #    return initial
-
-    # def get_context_data(self, **kwargs):
-    #    context = super().get_context_data(**kwargs)
-    # context["instance"] = InfoOfContact.objects.get(pk=self.kwargs["pk"])
-    # context["instance"].contact = InfoOfContact.objects.get(pk=self.kwargs["pk"]).contact
-    #    return context
-
-    # def get_success_url(self):
-    #    return reverse_lazy("contacts:contacts_detail", kwargs=dict(pk=self.kwargs["pk"]))
-    # success_url = reverse_lazy("contacts:contacts_detail", kwargs=dict(pk=self.kwargs["pk"]))
     success_url = reverse_lazy("contacts:contacts_list")
-    # return reverse_lazy("contacts:contacts_list")
 
 
 def contact_info_detail_view(request, pk):
