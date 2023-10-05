@@ -1,8 +1,7 @@
 # Docs: https://docs.djangoproject.com/en/3.2/topics/db/aggregation/
-
-from apps.contacts.models import Contact, GroupOfContact, TypeOfContact, InfoOfContact
-from django.db import models
 import logging
+from django.db import models
+from apps.contacts.models import Contact, GroupOfContact, TypeOfContact, InfoOfContact
 
 
 # This procedure used for test purposes to
@@ -220,15 +219,38 @@ def get_max_min_age_contact():
     data["age_max"] = get_age_from_date_of_birth(data["date_of_birth_max"])
     data["age_min"] = get_age_from_date_of_birth(data["date_of_birth_min"])
 
-    # data_avg = queryset.aggregate(
-    #     date_of_birth_avg=models.Avg(
-    #         models.ExpressionWrapper(models.F("date_of_birth"), output_field=models.DateField())
-    #     ),
-    # )
-    #
     data["age_avg"] = (data["age_max"] - data["age_min"]) / 2
-    # data["age_avg"] = data_avg["date_of_birth_avg"]
-    # # get_age_from_date_of_birth(data__set_avg["date_of_birth_avg"])
-    # .annotate(avg=Cast(F('count_answers'), FloatField()) / Cast(F('count_gym'), FloatField()))
 
     return data
+
+
+def get_avg_age_contact():
+    """
+    Get Max / Min contacts
+    """
+
+    # class YearDiff(models.Func):
+    #     function = 'EXTRACT'
+    #     template = "%(function)s(YEAR FROM %(expressions)s)"
+    #
+    # today = date.today()
+    # age_expression = models.ExpressionWrapper(
+    #     YearDiff(today, models.F('date_of_birth')),
+    #     output_field=models.fields.IntegerField()
+    # )
+    # data = Contact.objects.annotate(age=age_expression).aggregate(avg_age=models.Avg('age'))
+
+    # Вычисляем средний возраст контактов
+    average_age = Contact.objects.aggregate(average_age=models.Avg("date_of_birth"))["average_age"]
+
+    # Если нет записей с датами рождения, average_age будет None
+    if average_age is not None:
+        # Преобразовываем средний возраст из timedelta в годы
+        average_age_in_years = average_age.days / 365.25
+    else:
+        # Обработка случая, когда нет данных о датах рождения
+        average_age_in_years = None
+
+    # Теперь average_age_in_years содержит средний возраст в годах
+
+    return average_age_in_years
