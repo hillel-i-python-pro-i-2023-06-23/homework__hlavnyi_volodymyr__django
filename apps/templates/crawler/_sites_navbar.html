@@ -1,0 +1,30 @@
+<br>
+<nav class="navbar navbar-light bg-light">
+    <form class="container-fluid justify-content-start">
+        <a href="{% url 'crawler:sites_list' %}">
+            <button class="btn btn-outline-primary" type="button">
+                Show list of Sites
+            </button>
+        </a>
+
+        <a href="{% url 'crawler:site_create' %}">
+            <button class="btn btn-outline-secondary" type="button">
+                Add new Site for crawling
+            </button>
+        </a>
+
+        {#        <a href="{% url 'contacts:contacts_generate' %}">#}
+        {#            <button class="btn btn-outline-success" type="button">#}
+        {#                Generate new Contacts#}
+        {#            </button>#}
+        {#        </a>#}
+
+        {#        <a href="{% url 'crawler:site_delete' %}">#}
+        {#            <button class="btn btn-outline-danger" type="button">#}
+        {#                Delete all Sites#}
+        {#            </button>#}
+        {#        </a>#}
+
+
+    </form>
+</nav>

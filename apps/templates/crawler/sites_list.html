@@ -1,0 +1,15 @@
+{% extends "_helpers/_base.html" %}
+
+<div>
+    {% block content %}
+
+        {% include "crawler/_sites_navbar.html" %}
+
+        <h2>Sites</h2>
+
+        {#    {%  include "contacts/_header_statistics.html" %}#}
+
+        {% include "crawler/_sites_list_base.html" with sites_list=sites_list %}
+
+    {% endblock %}
+</div>

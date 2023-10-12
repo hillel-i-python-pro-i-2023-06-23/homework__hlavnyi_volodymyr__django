@@ -1,0 +1,35 @@
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col"></th>
+        <th>url</th>
+        <th>Finished crawling</th>
+        <th>Date (create)</th>
+        <th>Date (update)</th>
+    </tr>
+    </thead>
+    {% for site in sites_list %}
+        <tr>
+            <th scope="row"></th>
+
+            <td>{{ site.url }}</td>
+            <td>{{ site.flag_was_finished_crawling }}</td>
+            <td>{{ site.created_at }}</td>
+            <td>{{ site.updated_at }}</td>
+            <td>
+                <a href="{% url 'crawler:site_edit' site.pk %}">
+                    <button class="btn btn-outline-primary" type="button">
+                        Edit
+                    </button>
+                </a>
+            </td>
+            <td>
+                <a href="{% url 'crawler:site_delete' site.pk %}">
+                    <button class="btn btn-outline-danger" type="button">
+                        Delete
+                    </button>
+                </a>
+            </td>
+        </tr>
+    {% endfor %}
+</table>
