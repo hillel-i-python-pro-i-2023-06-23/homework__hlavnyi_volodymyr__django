@@ -3,7 +3,8 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView
 
-from apps.crawler.forms import SiteForm
+from apps.crawler.additionaly.start_crawling import start_crawling
+from apps.crawler.forms import SiteForm, GetSatesListForm
 from apps.crawler.models import Site
 
 
@@ -43,3 +44,24 @@ def site_delete(request, site_id):
         return redirect("crawler:sites_list")
 
     return render(request, "crawler/site_delete.html", {"site": site})
+
+
+def get_sites_list_view(request):
+    if request.method == "POST":
+        form = GetSatesListForm(request.POST)
+
+        if form.is_valid():
+            sites_list_text = form.cleaned_data["sites_text"]
+            start_crawling(site_text=sites_list_text)
+            return render(
+                request=request,
+                template_name="crawler/sites_list.html",
+                context=dict(sites_list=Site.objects.all(), form=form),
+            )
+    else:
+        form = GetSatesListForm()
+        return render(
+            request=request,
+            template_name="crawler/get_sites_list.html",
+            context=dict(sites_list=Site.objects.all(), form=form),
+        )
