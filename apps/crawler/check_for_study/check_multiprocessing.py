@@ -2,7 +2,7 @@
 # for Study purpose only
 # !!!
 
-import threading
+import multiprocessing
 import time
 import random
 
@@ -10,10 +10,10 @@ import random
 def worker(number):
     sleep = random.randint(1, 10)
     time.sleep(sleep)
-    print(f"Worker {number} slept for {sleep} seconds")
+    print(f"Multiprocessing: Worker {number} slept for {sleep} seconds")
 
 
 for i in range(5):
-    t = threading.Thread(target=worker, args=(i,))
+    t = multiprocessing.Process(target=worker, args=(i,))
     t.start()
     print(f"Started worker {i}")
