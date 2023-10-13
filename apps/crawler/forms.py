@@ -29,6 +29,5 @@ class GetSatesListForm(forms.Form):
         + "\r\n"
         + "https://www.twitter.com/"
         + "\r\n"
-        + "https://www.live.com/"
-        + "\r\n",
+        + "https://www.live.com/",
     )

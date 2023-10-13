@@ -1,15 +1,20 @@
 # Core for web.
-django==4.2.5
+django==4.2.6
 
 # css bootstrap
 django-bootstrap-v5==1.0.11
 
 # For name generation.
-faker==19.6.1
+faker==19.10.0
 
 # environment variables
 django-environ==0.11.2
 
 # connector to PostgreSQL
-psycopg==3.1.10
+psycopg==3.1.12
 
+# Async requests https://docs.aiohttp.org/en/stable/
+aiohttp[speedups]==3.8.6
+
+# For parsing html
+beautifulsoup4==4.12.2

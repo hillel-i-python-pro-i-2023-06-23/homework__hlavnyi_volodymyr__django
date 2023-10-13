@@ -1,4 +1,29 @@
-<table class="table table-striped">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        setInterval(function () {
+            $.getJSON('/crawler/sites_list/',
+                function (data) {
+                    var json = data['sites_list'];
+                    var tr;
+                    $('#myTable tbody').html("");
+                    for (var i = 0; i < json.length; i++) {
+                        tr = $('<tr/>');
+                        tr.append("<td>" + json[i].url + "</td>");
+                        tr.append("<td>" + json[i].flag_was_finished_crawling + "</td>");
+                        tr.append("<td>" + json[i].created_at + "</td>");
+                        tr.append("<td>" + json[i].updated_at + "</td>");
+                        $('#myTable tbody').append(tr);
+
+                    }
+                });
+        }, 1000);
+    });
+
+</script>
+
+<table class="table table-striped" id="myTable">
     <thead>
     <tr>
         <th scope="col"></th>

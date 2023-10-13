@@ -9,9 +9,10 @@ urlpatterns = [
     path("site_create/", views.SiteCreateView.as_view(), name="site_create"),
     path("site_edit/<int:site_id>", views.site_edit, name="site_edit"),
     path("site_delete/<int:site_id>", views.site_delete, name="site_delete"),
+    path("delete_all/", views.delete_sites_all_view, name="sites_delete_all"),
     #
     path("sites_enter/", views.get_sites_list_view, name="sites_enter"),
-    # path("delete/", views.delete_contacts_view, name="contacts_delete"),
+    path("sites_list_update/", views.sites_list_update, name="sites_list"),
     # path("delete/<int:pk>/", views.ContactDeleteView.as_view(), name="contacts_delete"),
     #
 ]

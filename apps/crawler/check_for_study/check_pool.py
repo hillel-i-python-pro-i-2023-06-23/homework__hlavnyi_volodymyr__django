@@ -1,3 +1,7 @@
+# !!!
+# for Study purpose only
+# !!!
+
 from multiprocessing import Pool
 from datetime import datetime
 
