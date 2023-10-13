@@ -1,43 +1,41 @@
+import asyncio
 import logging
 
-# import asyncio
-from typing import TypeAlias
+from django.shortcuts import redirect
+from django.urls import reverse_lazy
 
-import bs4
-
+from apps.crawler.additionaly.init_logging import init_logging
 from apps.crawler.additionaly.rw_db import save_sites_list_to_database
+from apps.crawler.check_for_study.async_client import main
 
-T_URL: TypeAlias = str
-T_URLS: TypeAlias = list[T_URL]
-T_URLS_AS_SET: TypeAlias = set[T_URL]
 
-T_TEXT: TypeAlias = str
+# from apps.crawler.additionaly.search_subsite import test_main, async_search_for_site_sub_sites_from_db
+# from apps.crawler.models import Site
+
+
+# from apps.crawler.additionaly.search_subsite import async_search_for_site_sub_sites_from_db
 
 
 def start_crawling(site_text: str):
-    logger = logging.getLogger("django")
-    logger.info(f"Start Crawling for site_text: {site_text}")
-
+    init_logging()
+    logger = logging.getLogger("core")
+    logger.info(f"Start Crawling for site_text: \n{site_text}")
+    # t = threading.Thread(target=save_sites_list_to_database,
+    # args = (site_text, False,) )
+    # t.start()
     save_sites_list_to_database(url=site_text, flag_ready=False)
+    logger.info("Finished to save to DB list of Sites")
+    # logger.info("Wait 1 sec and then go to sites_list")
+    asyncio.run(update_sites_list())
+    logger.info("Start search Sub Sites")
+    # asyncio.run(async_search_for_site_sub_sites_from_db())
+    # search_for_site_sub_sites_from_db()
+    # site_list = list(Site.objects.filter(flag_was_finished_crawling=False))
+    # search_for_site_sub_sites_from_db()
+    asyncio.run(main())
+    logger.info("Finish search Sub Sites")
 
-    # queryset = Contact.objects.all()
-    #
-    # logger.info(f"Current amount of contacts before: {queryset.count()}")
-    #
-    # for contact in generate_contacts(amount=amount):
-    #     contact.save()
-    #     add_random_groups(contact=contact)
-    #     add_random_info_of_contact(contact=contact)
 
-    # logger.info(f"Current amount of contacts after: {queryset.count()}")
-
-
-async def get_urls_from_text(text: T_TEXT) -> T_URLS_AS_SET:
-    soup = bs4.BeautifulSoup(markup=text, features="html.parser")
-
-    urls = set()
-    for link_element in soup.find_all("a"):
-        url = link_element.get("href")
-        urls.add(url)
-
-    return set(urls)
+async def update_sites_list():
+    await asyncio.sleep(1)
+    return redirect(reverse_lazy("crawler:sites_list"))

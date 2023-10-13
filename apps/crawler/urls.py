@@ -12,7 +12,7 @@ urlpatterns = [
     path("delete_all/", views.delete_sites_all_view, name="sites_delete_all"),
     #
     path("sites_enter/", views.get_sites_list_view, name="sites_enter"),
-    path("sites_list_update/", views.sites_list_update, name="sites_list"),
+    # path("sites_list_update/", views.sites_list_update, name="sites_list"),
     # path("delete/<int:pk>/", views.ContactDeleteView.as_view(), name="contacts_delete"),
     #
 ]
