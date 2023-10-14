@@ -1,5 +1,5 @@
 # from django.shortcuts import render
-
+import asyncio
 
 from django.shortcuts import get_object_or_404, redirect, render
 
@@ -65,7 +65,7 @@ def get_sites_list_view(request):
         if form.is_valid():
             sites_list_text = form.cleaned_data["sites_text"]
             # main part of Project HW.22 Crawler !
-            start_crawling(site_text=sites_list_text)
+            asyncio.run(start_crawling(site_text=sites_list_text))
             template_for_render = "crawler/sites_list.html"
 
     else:

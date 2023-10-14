@@ -21,8 +21,6 @@ class GetSatesListForm(forms.Form):
         + "\r\n"
         + "https://www.wikipedia.org/"
         + "\r\n"
-        + "https://www.reddit.com/"
-        + "\r\n"
         + "https://www.amazon.com/"
         + "\r\n"
         + "https://www.yahoo.com/"

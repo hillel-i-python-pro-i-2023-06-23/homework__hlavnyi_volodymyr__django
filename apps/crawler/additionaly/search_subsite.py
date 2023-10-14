@@ -4,11 +4,11 @@ from typing import TypeAlias
 
 import aiohttp
 import bs4
+from asgiref.sync import sync_to_async
 
 from apps.crawler.models import Site
 
 from apps.crawler.additionaly.loggers import get_custom_logger
-
 
 T_URL: TypeAlias = str
 T_URLS: TypeAlias = list[T_URL]
@@ -19,7 +19,6 @@ T_TEXT: TypeAlias = str
 
 async def get_urls_from_text(text: T_TEXT) -> T_URLS_AS_SET:
     soup = bs4.BeautifulSoup(markup=text, features="html.parser")
-
     urls = set()
     for link_element in soup.find_all("a"):
         url = link_element.get("href")
@@ -45,18 +44,32 @@ async def handle_url(url: T_URL, session: aiohttp.ClientSession) -> T_URLS:
     return list(urls_as_set)
 
 
-async def async_search_for_site_sub_sites_from_db():
-    site_list = list(Site.objects.filter(flag_was_finished_crawling=False))
-    for site in site_list:
-        print(site.url)
-        async with aiohttp.ClientSession(
-            cookie_jar=aiohttp.DummyCookieJar(),
-        ) as session:
-            # tasks_search = [handle_url(url=url, session=session) for url in site_list]
-            # result_search = await asyncio.gather(*tasks_search)
-            result = await handle_url(url=site.url, session=session)
-        # for result in result_search:
-        print(result)
+def database_sync_to_async(list):
+    pass
+
+
+@sync_to_async
+def get_list_of_sites(flag_ready: bool = False) -> list:
+    # return list(Site.objects.filter(flag_was_finished_crawling=flag_ready))
+    apps = await database_sync_to_async(list)(Site.objects.filter(flag_was_finished_crawling=flag_ready))
+    for app in apps:
+        # app_json = ApplicationSerializer(app).data
+        # await self.send_json({"action": "create", "data": app_json})
+        pass
+
+
+async def search_for_site_sub_sites_from_db():
+    site_list = get_list_of_sites(False)
+    # for site in site_list:
+    # print(site.url)
+    async with aiohttp.ClientSession(
+        cookie_jar=aiohttp.DummyCookieJar(),
+    ) as session:
+        tasks_search = [handle_url(url=url, session=session) for url in site_list]
+        result_search = await asyncio.gather(*tasks_search)
+        # result = await handle_url(url=site.url, session=session)
+    for result in result_search:
+        print(result_search)
 
 
 # def search_for_site_sub_sites_from_db():
