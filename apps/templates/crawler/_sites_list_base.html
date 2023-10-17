@@ -2,17 +2,50 @@
     <thead>
     <tr>
         <th scope="col"></th>
-        <th>url</th>
+        <th>Site</th>
         <th>Finished crawling</th>
         <th>Date (create)</th>
         <th>Date (update)</th>
+        <th>Edit</th>
+        <th>Delete</th>
     </tr>
     </thead>
     {% for site in sites_list %}
         <tr>
             <th scope="row"></th>
 
-            <td>{{ site.url }}</td>
+            <td>
+                {% if site.sub_sites.count == 0 %}
+                    <div>
+                        <div>
+                            {{ site.url }}
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="accordion" id={{ site.pk }}>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#panelsStayOpen-collapse{{ site.pk }}" aria-expanded="false"
+                                        aria-controls="panelsStayOpen-collapse{{ site.pk }}">
+                                    {{ site.url }} (sub sites: {{ site.sub_sites.count }})
+                                </button>
+                            </h2>
+                            <div id="panelsStayOpen-collapse{{ site.pk }}" class="accordion-collapse collapse">
+                                <div class="accordion-body">
+                                    <ol>
+                                        {% for sub_site in site.sub_sites.all %}
+                                            <li>
+                                                {{ sub_site.sub_url }}  (Finished {{ sub_site.flag_was_finished_crawling }})
+                                            </li>
+                                        {% endfor %}
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </td>
             <td>{{ site.flag_was_finished_crawling }}</td>
             <td>{{ site.created_at }}</td>
             <td>{{ site.updated_at }}</td>
@@ -31,5 +64,6 @@
                 </a>
             </td>
         </tr>
+
     {% endfor %}
 </table>

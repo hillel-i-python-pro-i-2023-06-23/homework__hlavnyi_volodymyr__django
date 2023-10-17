@@ -3,7 +3,7 @@
 <div>
     {% block content %}
 
-        {% include "crawler/_sites_navbar.html" %}
+        {% include "crawler/_sites_navbar.html" with sites_list=sites_list %}
 
         <h2>Sites</h2>
 

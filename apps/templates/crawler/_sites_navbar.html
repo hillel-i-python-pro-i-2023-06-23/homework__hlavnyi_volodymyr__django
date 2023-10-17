@@ -3,7 +3,7 @@
     <form class="container-fluid justify-content-start">
         <a href="{% url 'crawler:sites_list' %}">
             <button class="btn btn-outline-primary" type="button">
-                Show list of Sites
+                Show list of Sites ({{ sites_list.count }})
             </button>
         </a>
 
@@ -19,9 +19,16 @@
             </button>
         </a>
 
+        <a href="{% url 'crawler:sites_start_crawling' %}">
+            {#            <button class="btn btn-outline-warning" type="button">#}
+            <button class="btn btn-warning" type="button">
+                Start Sites for crawling
+            </button>
+        </a>
+
         <a href="{% url 'crawler:sites_delete_all' %}">
             <button class="btn btn-outline-danger" type="button">
-                Delete all Sites
+                Delete All Sites
             </button>
         </a>
 

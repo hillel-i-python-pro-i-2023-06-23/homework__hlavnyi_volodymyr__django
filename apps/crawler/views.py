@@ -3,11 +3,14 @@ import asyncio
 
 from django.shortcuts import get_object_or_404, redirect, render
 
+from django.contrib import messages
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView
+from django.views.generic import ListView
 
+from apps.crawler.additionaly.search_subsite import async_search_for_site_sub_sites_from_db
+from apps.crawler.additionaly.sites_check import check_is_site_exist
 from apps.crawler.additionaly.start_crawling import start_crawling
-from apps.crawler.forms import SiteForm, GetSatesListForm
+from apps.crawler.forms import SiteForm, GetSatesListForm, CreateSiteForm
 from apps.crawler.models import Site
 
 from apps.crawler.additionaly.sites_delete_all import delete_sites
@@ -19,11 +22,30 @@ class SitesListView(ListView):
     template_name = "crawler/sites_list.html"
 
 
-class SiteCreateView(CreateView):
-    model = Site
-    fields = ("url",)
-    success_url = reverse_lazy("crawler:sites_list")
-    template_name = "crawler/site_create.html"
+def site_create_view(request):
+    template_for_render = "crawler/site_create.html"
+
+    if request.method == "POST":
+        form = CreateSiteForm(request.POST)
+        url_text = form.data["url_text"]
+        if not check_is_site_exist(url_text):
+            messages.add_message(request, messages.INFO, "Site is not exist. Please enter other name of site.")
+        elif form.is_valid():
+            site = Site.objects.filter(url=url_text).first()
+            if site is None:
+                Site.objects.create(url=url_text, flag_was_finished_crawling=False)
+                template_for_render = "crawler/sites_list.html"
+            else:
+                messages.add_message(request, messages.INFO, "Site was present in db. Please enter other name of site.")
+
+    else:
+        form = CreateSiteForm()
+
+    return render(
+        request=request,
+        template_name=template_for_render,
+        context=dict(sites_list=Site.objects.all(), form=form),
+    )
 
 
 def site_edit(request, site_id):
@@ -56,6 +78,11 @@ def delete_sites_all_view(request):
     return redirect(reverse_lazy("crawler:sites_list"))
 
 
+def start_crawling_sites_all_view(request):
+    asyncio.run(async_search_for_site_sub_sites_from_db())
+    return redirect(reverse_lazy("crawler:sites_list"))
+
+
 def get_sites_list_view(request):
     template_for_render = "crawler/get_sites_list.html"
 
@@ -64,7 +91,6 @@ def get_sites_list_view(request):
 
         if form.is_valid():
             sites_list_text = form.cleaned_data["sites_text"]
-            # main part of Project HW.22 Crawler !
             asyncio.run(start_crawling(site_text=sites_list_text))
             template_for_render = "crawler/sites_list.html"
 

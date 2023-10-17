@@ -21,3 +21,9 @@ beautifulsoup4==4.12.2
 
 # For ASGI
 asgiref~=3.7.2
+
+# For REST API (Serializations)
+djangorestframework==3.14.0
+
+# For checking if site is exist
+requests==2.31.0

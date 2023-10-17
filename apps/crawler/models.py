@@ -16,13 +16,17 @@ class Site(models.Model):
             updated_at=self.updated_at.isoformat(),
         )
 
+    def __str__(self):
+        return f"{self.url}"
+
     class Meta:
         ordering = ["-updated_at", "-created_at", "url"]
 
 
 class SubSite(models.Model):
-    site = models.ForeignKey(Site, on_delete=models.CASCADE)
+    site = models.ForeignKey(Site, on_delete=models.CASCADE, related_name="sub_sites")
     sub_url = models.CharField(max_length=500)
+    flag_was_finished_crawling = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -34,6 +38,9 @@ class SubSite(models.Model):
             created_at=self.created_at.isoformat(),
             updated_at=self.updated_at.isoformat(),
         )
+
+    def __str__(self):
+        return f"{self.sub_url}"
 
     class Meta:
         ordering = ["-updated_at", "-created_at", "site"]

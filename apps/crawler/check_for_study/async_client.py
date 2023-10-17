@@ -50,11 +50,6 @@ async def handle_url(url: T_URL, session: aiohttp.ClientSession) -> T_URLS:
     return list(urls_as_set)
 
 
-# @sync_to_async
-# def get_item():
-#     return list(Site.objects.filter(flag_was_finished_crawling=False))
-
-
 async def main():
     # urls_list = await get_item()
     urls = [
