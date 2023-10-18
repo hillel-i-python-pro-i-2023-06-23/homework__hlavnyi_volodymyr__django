@@ -14,6 +14,7 @@ import string
 from pathlib import Path
 
 import environ
+from celery.schedules import crontab
 from django.utils.crypto import get_random_string
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -57,6 +58,7 @@ LOCAL_APPS = [
     "apps.first_example",
     "apps.contacts",
     "apps.crawler",
+    "apps.schedule",
 ]
 
 THIRD_PARTY_APPS = [
@@ -168,3 +170,13 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+CELERY_BROKER_URL = env.str("CELERY_BROKER_URL")
+
+CELERY_BEAT_SCHEDULE = {
+    "schedule_task": {
+        "task": "apps.schedule.tasks.example_1.example_1",
+        "schedule": crontab(minute="*/1"),  # every minute
+        # 'schedule': crontab(hour='*/21'),  # every 21 hour
+    },
+}
