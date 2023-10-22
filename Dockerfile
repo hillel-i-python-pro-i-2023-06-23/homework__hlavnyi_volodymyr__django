@@ -28,7 +28,6 @@ COPY --chown=${USER} ./manage.py manage.py
 COPY --chown=${USER} ./core core
 COPY --chown=${USER} ./apps apps
 
-
 USER ${USER}
 
 VOLUME ${WORKDIR}/db

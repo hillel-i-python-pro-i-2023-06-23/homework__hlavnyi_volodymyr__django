@@ -20,6 +20,8 @@ services:
   app:
     <<: *app_as_service
     command: /start.sh
+    volumes:
+      - ./db:/wd/db:rw
 
   postgres:
     image: postgres:15.4

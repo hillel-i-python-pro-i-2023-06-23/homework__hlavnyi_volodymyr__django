@@ -13,7 +13,7 @@ def get_from_file_site_to_list(filein: str, list_start_sites: list, number_of_it
     """
 
     filein_with_iteration = get_file_name_with_iteration(file_name=filein, number_of_iteration=number_of_iteration)
-    filein_full = str(os.path.join(os.getcwd(), filein_with_iteration))
+    filein_full = str(os.path.join(f"{os.getcwd()}/db/", filein_with_iteration))
 
     if not os.path.exists(filein_full):
         save_from_file_site_to_list(
@@ -34,7 +34,7 @@ def get_crawling_site_from_list_to_tuple(list_sites_for_crawling: list) -> tuple
 
 def save_from_file_site_to_list(fileout: str, list_new_site: list, number_of_iteration: int) -> None:
     fileout_with_iteration = get_file_name_with_iteration(file_name=fileout, number_of_iteration=number_of_iteration)
-    fileout_full = str(os.path.join(os.getcwd(), fileout_with_iteration))
+    fileout_full = str(os.path.join(f"{os.getcwd()}/db/", fileout_with_iteration))
     if not list_new_site:
         list_new_site = get_initial_list_of_sites_for_crawling()
 
