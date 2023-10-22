@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.urls import reverse_lazy
 from django.views.generic import ListView
 
-from apps.crawler.additionaly.search_subsite import async_search_for_site_sub_sites_from_db
+from apps.crawler.additionaly.search_subsite_db import async_search_for_site_sub_sites_from_db
 from apps.crawler.additionaly.sites_check import check_is_site_exist
 from apps.crawler.additionaly.start_crawling import start_crawling
 from apps.crawler.forms import SiteForm, GetSatesListForm, CreateSiteForm

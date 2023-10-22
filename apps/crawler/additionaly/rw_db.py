@@ -4,7 +4,6 @@ import logging
 
 from asgiref.sync import sync_to_async
 
-from apps.crawler.additionaly.sites_check import check_is_site_exist
 from apps.crawler.models import Site, SubSite
 
 
@@ -45,14 +44,3 @@ def save_sub_site_to_database(site_str: str, sub_url: str, flag_ready: bool) -> 
 async def save_site_and_sub_site_to_db(site_str: str, sub_url: str, flag_ready: bool) -> None:
     await save_site_to_database(site_str=site_str, flag_ready=flag_ready)
     await save_sub_site_to_database(site_str=site_str, sub_url=sub_url, flag_ready=flag_ready)
-
-
-async def save_sub_sites_list_to_database(site_str: str, sub_url: list) -> None:
-    logger = logging.getLogger("core")
-    for sub_url in sub_url:
-        await save_site_and_sub_site_to_db(site_str=site_str, sub_url=sub_url, flag_ready=False)
-        if check_is_site_exist(sub_url):  # and (not queryset.flag_was_finished_crawling):
-            await save_site_to_database(site_str=sub_url, flag_ready=False)
-            await save_site_and_sub_site_to_db(site_str=site_str, sub_url=sub_url, flag_ready=True)
-    await save_site_to_database(site_str=site_str, flag_ready=True)
-    logger.info(f"Finish Site '{site_str}', Flag True to Save to DB")

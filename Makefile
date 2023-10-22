@@ -134,3 +134,8 @@ init-first-start-db:
 # Show Contacts Aggregation (for testing)
 show-contacts-aggregation:
 	@python manage.py show_aggregation_info
+
+.PHONY: start_crawling
+# Start crawling
+start_crawling:
+	@python manage.py start_crawling --filein in.txt --fileout out.txt --level 2 --show-progress

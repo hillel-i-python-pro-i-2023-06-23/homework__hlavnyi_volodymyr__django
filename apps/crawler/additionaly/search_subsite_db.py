@@ -6,7 +6,7 @@ import aiohttp
 import bs4
 from asgiref.sync import sync_to_async
 
-from apps.crawler.additionaly.rw_db import save_sub_sites_list_to_database
+from apps.crawler.additionaly.rw_db import save_sites_list_to_database
 from apps.crawler.models import Site
 
 from apps.crawler.additionaly.loggers import get_custom_logger
@@ -48,7 +48,8 @@ async def handle_url(url: T_URL, session: aiohttp.ClientSession) -> T_URLS:
     logger = get_custom_logger(name=url)
     text = await make_request(url=url, session=session, logger=logger)
     urls_as_set = await get_urls_from_text(site_str=url, text=text)
-    await save_sub_sites_list_to_database(site_str=url, sub_url=list(urls_as_set))
+    # await save_sub_sites_list_to_database(site_str=url, sub_url=list(urls_as_set))
+    await save_sites_list_to_database(url=url, flag_ready=True)
     return list(urls_as_set)
 
 

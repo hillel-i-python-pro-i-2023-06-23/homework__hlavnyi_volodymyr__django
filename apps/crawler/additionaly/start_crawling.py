@@ -6,7 +6,7 @@ from django.urls import reverse_lazy
 
 from apps.crawler.additionaly.init_logging import init_logging
 from apps.crawler.additionaly.rw_db import save_sites_list_to_database
-from apps.crawler.additionaly.search_subsite import async_search_for_site_sub_sites_from_db
+from apps.crawler.additionaly.search_subsite_db import async_search_for_site_sub_sites_from_db
 
 
 async def start_crawling(site_text: str):
