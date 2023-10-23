@@ -40,10 +40,10 @@
             <td>
                 <a href="{% url 'contacts:contacts_detail' contact.pk %}">
                     <button class="btn btn-outline-primary" type="button">
-                        {% if contact.pk not in extra_info_type_count_by_id_contact_list_id %}
+                        {% if contact.pk not in info_type_count_by_id_contact_list_id %}
                             Detail (Empty)
                         {% else %}
-                            {% for type_count in extra_info_type_count_by_id_contact %}
+                            {% for type_count in info_type_count_by_id_contact %}
                                 {% if type_count.contact_id == contact.pk %}
                                     Detail ({{ type_count.count }})
                                 {% endif %}
