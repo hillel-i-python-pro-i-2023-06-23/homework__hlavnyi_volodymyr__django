@@ -14,6 +14,23 @@ class Contact(models.Model):
         related_name="contacts",
     )
 
+    @property
+    def groups_of_contact_amount(self):
+        return self.groups_of_contact.count()
+
+    @property
+    def age(self):
+        from datetime import date
+
+        today = date.today()
+        if self.date_of_birth:
+            return (
+                today.year
+                - self.date_of_birth.year
+                - ((today.month, today.day) < (self.date_of_birth.month, self.date_of_birth.day))
+            )
+        return None
+
     created_at = models.DateTimeField(
         auto_now_add=True,
         blank=False,

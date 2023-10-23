@@ -15,6 +15,6 @@ def home_page(request):
             "nested": {
                 "random_number": random.randint(1, 100),
             },
-            "title": "HW 16",
+            "title": "HW 21",
         },
     )

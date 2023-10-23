@@ -5,8 +5,10 @@
 
     {% include "contacts/_contacts_navbar.html" %}
 
-    <h1>Contacts</h1>
+    <h2>Contacts</h2>
 
-    {% include "contacts/_contacts_list_base.html" with contacts_list=object_list %}
+    {%  include "contacts/_header_statistics.html" %}
+
+    {% include "contacts/_contacts_list_base.html" with contacts_list=object_list extra_info_type_count_by_id_contact=extra_info_type_count_by_id_contact extra_info_type_count_by_id_contact_list_id=extra_info_type_count_by_id_contact_list_id %}
 {% endblock %}
 </div>

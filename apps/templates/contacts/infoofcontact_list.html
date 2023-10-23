@@ -8,6 +8,7 @@
         <th>modified at</th>
     </tr>
     </thead>
+
     {% for info in info_of_contact %}
         <tr>
             <th scope="row"></th>
@@ -17,4 +18,5 @@
             <td>{{ info.modified_at }}</td>
         </tr>
     {% endfor %}
+
 </table>

@@ -19,4 +19,6 @@ urlpatterns = [
     # path("createdetails/<int:pk>/", views.contact_info_detail_view, name="contacts_details_create"),
     #
     path("detail/<int:pk>/", views.ContactDetailView.as_view(), name="contacts_detail"),
+    #
+    # path("statistics/", views.StatisticsView.as_view(), name="contacts_statistics"),
 ]
