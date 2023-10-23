@@ -73,16 +73,16 @@ def print_list(show_progress: bool, list_new_site, logger):
 
 def get_initial_list_of_sites_for_crawling() -> list:
     return [
-        "https://www.example.com/\n",
-        "https://example.com/\n",
-        "https://www.djangoproject.com/\n",
-        "https://www.facebook.com/\n",
-        "https://www.wikipedia.org/\n",
-        "https://ithillel.ua\n",
-        "https://www.linkedin.com\n",
-        "https://www.twitter.com /\n",
-        "https://www.live.com/\n",
-        "https://cambridge.ua\n",
-        "https://www.codewars.com\n",
-        "https://cnn.com\n",
+        "https://www.example.com",
+        "https://example.com",
+        "https://www.djangoproject.com",
+        "https://www.facebook.com",
+        "https://www.wikipedia.org",
+        "https://ithillel.ua",
+        "https://www.linkedin.com",
+        "https://www.twitter.com",
+        "https://www.live.com",
+        "https://cambridge.ua",
+        "https://www.codewars.com",
+        "https://cnn.com",
     ]
