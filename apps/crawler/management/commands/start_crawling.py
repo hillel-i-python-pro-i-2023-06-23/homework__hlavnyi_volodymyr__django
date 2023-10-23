@@ -47,22 +47,9 @@ def start_crawling(filein: str, fileout: str, verbosity_level: int, show_progres
     t_start = datetime.datetime.now()
     list_new_site = []
     logger.info("---------Start Crawling")
+
     for current_level in range(1, verbosity_level + 1):
-        logger.info(f"---------Start cycle {current_level} of {verbosity_level} ---")
-
-        # step 1
-        list_sites_for_crawling = get_from_file_site_to_list(
-            filein=filein, list_start_sites=list_new_site, number_of_iteration=current_level
-        )
-
-        # step 2
-        list_new_site = get_crawling_site_from_list_to_tuple(list_sites_for_crawling=list_sites_for_crawling)
-
-        # step 3
-        save_from_file_site_to_list(fileout=fileout, list_new_site=list_new_site, number_of_iteration=current_level)
-        logger.info(f"---------Finish cycle {current_level} of {verbosity_level} ---")
-
-        print_list(show_progress=show_progress, list_new_site=list_new_site, logger=logger)
+        create_paket_crawling(logger, current_level, verbosity_level, filein, fileout, list_new_site, show_progress)
 
     logger.info("---------Finish Crawling")
     t_finish = datetime.datetime.now()
@@ -70,5 +57,23 @@ def start_crawling(filein: str, fileout: str, verbosity_level: int, show_progres
     logger.info(f"---------Time spent for Crawling: {delta.total_seconds()}")
 
 
+def create_paket_crawling(logger, current_level, verbosity_level, filein, fileout, list_new_site, show_progress):
+    logger.info(f"---------Start cycle {current_level} of {verbosity_level} ---")
+
+    # step 1
+    list_sites_for_crawling = get_from_file_site_to_list(
+        filein=filein, list_start_sites=list_new_site, number_of_iteration=current_level
+    )
+
+    # step 2
+    list_new_site = get_crawling_site_from_list_to_tuple(list_sites_for_crawling=list_sites_for_crawling)
+
+    # step 3
+    save_from_file_site_to_list(fileout=fileout, list_new_site=list_new_site, number_of_iteration=current_level)
+    logger.info(f"---------Finish cycle {current_level} of {verbosity_level} ---")
+
+    print_list(show_progress=show_progress, list_new_site=list_new_site, logger=logger)
+
+
 if __name__ == "__main__":
-    start_crawling(filein="in.txt", fileout="out.txt", verbosity_level=1, show_progress=True)
+    start_crawling(filein="in.txt", fileout="out.txt", verbosity_level=2, show_progress=True)
