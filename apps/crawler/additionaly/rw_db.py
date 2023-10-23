@@ -41,6 +41,13 @@ def save_sub_site_to_database(site_str: str, sub_url: str, flag_ready: bool) -> 
         sub_site.save()
 
 
+# @sync_to_async
+async def save_sub_site_list_to_database(site_str: str, sub_url: list, flag_ready: bool) -> None:
+    await save_site_to_database(site_str=site_str, flag_ready=flag_ready)
+    for site_line_url in sub_url:
+        await save_sub_site_to_database(site_str=site_str, sub_url=site_line_url, flag_ready=flag_ready)
+
+
 async def save_site_and_sub_site_to_db(site_str: str, sub_url: str, flag_ready: bool) -> None:
     await save_site_to_database(site_str=site_str, flag_ready=flag_ready)
     await save_sub_site_to_database(site_str=site_str, sub_url=sub_url, flag_ready=flag_ready)
