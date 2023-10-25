@@ -1,6 +1,12 @@
 # Docs: https://docs.djangoproject.com/en/3.2/topics/db/aggregation/
 import logging
+
+# from datetime import date
+
 from django.db import models
+from django.db.models import Avg, ExpressionWrapper, F, IntegerField
+from django.db.models.functions import Now
+
 from apps.contacts.models import Contact, GroupOfContact, TypeOfContact, InfoOfContact
 
 
@@ -238,19 +244,25 @@ def get_avg_age_contact():
     #     YearDiff(today, models.F('date_of_birth')),
     #     output_field=models.fields.IntegerField()
     # )
-    # data = Contact.objects.annotate(age=age_expression).aggregate(avg_age=models.Avg('age'))
+    # average_age = Contact.objects.annotate(age=age_expression).aggregate(avg_age=models.Avg('age'))
 
-    # Вычисляем средний возраст контактов
-    average_age = Contact.objects.aggregate(average_age=models.Avg("date_of_birth"))["average_age"]
+    # # Вычисляем средний возраст контактов
+    # average_age = Contact.objects.aggregate(average_age=models.Avg("date_of_birth"))["average_age"]
+    #
+    # # Если нет записей с датами рождения, average_age будет None
+    # if average_age is not None:
+    #     # Преобразовываем средний возраст из timedelta в годы
+    #     average_age_in_years = average_age.days / 365.25
+    # else:
+    #     # Обработка случая, когда нет данных о датах рождения
+    #     average_age_in_years = None
+    #
+    # # Теперь average_age_in_years содержит средний возраст в годах
 
-    # Если нет записей с датами рождения, average_age будет None
-    if average_age is not None:
-        # Преобразовываем средний возраст из timedelta в годы
-        average_age_in_years = average_age.days / 365.25
-    else:
-        # Обработка случая, когда нет данных о датах рождения
-        average_age_in_years = None
+    data = Contact.objects.annotate(
+        age_in_years=ExpressionWrapper(Now() - F("date_of_birth"), output_field=IntegerField())
+    )
 
-    # Теперь average_age_in_years содержит средний возраст в годах
+    average_age = data.aggregate(average_age=Avg("age_in_years"))["average_age"]
 
-    return average_age_in_years
+    return average_age

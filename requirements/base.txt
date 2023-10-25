@@ -1,15 +1,36 @@
 # Core for web.
-django==4.2.5
+django==4.2.6
 
 # css bootstrap
 django-bootstrap-v5==1.0.11
 
 # For name generation.
-faker==19.6.1
+faker==19.10.0
 
 # environment variables
 django-environ==0.11.2
 
 # connector to PostgreSQL
-psycopg==3.1.10
+psycopg[binary,pool]==3.1.12
 
+# Async requests https://docs.aiohttp.org/en/stable/
+aiohttp[speedups]==3.8.6
+
+# For parsing html
+beautifulsoup4==4.12.2
+
+# For ASGI
+asgiref~=3.7.2
+
+# For REST API (Serializations)
+djangorestframework==3.14.0
+
+# For checking if site is exist
+requests==2.31.0
+
+# For Celery
+celery==5.3.4
+django-celery-beat==2.5.0
+
+# For Celery monitoring
+cronitor==4.7.0

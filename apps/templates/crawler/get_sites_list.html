@@ -1,0 +1,25 @@
+{% extends "_helpers/_base.html" %}
+
+{% block content %}
+    <h1> Enter Sites for Crawling </h1>
+
+    <form method="POST" style="margin-bottom: 1em;">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <div>
+            <button class="btn btn-outline-danger" type="submit">Start Crawling</button>
+            <a href="{% url 'crawler:sites_list' %}">
+                <button class="btn btn-outline-primary" type="button">
+                    Return
+                </button>
+            </a>
+        </div>
+    </form>
+
+{#    {%  include "contacts/_header_statistics.html" %}#}
+
+{#    {% include "crawler/_sites_list_base.html" with sites_list=sites_list %}#}
+
+{% endblock %}

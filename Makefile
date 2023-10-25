@@ -134,3 +134,18 @@ init-first-start-db:
 # Show Contacts Aggregation (for testing)
 show-contacts-aggregation:
 	@python manage.py show_aggregation_info
+
+.PHONY: start_crawling
+# Start crawling
+start_crawling:
+	@python manage.py start_crawling --filein in.txt --fileout out.txt --level 2 --show-progress
+
+.PHONY: homework-i-run-start_crawling-level-1
+# Start crawling (level 1)
+homework-i-run-start_crawling-level-1:
+	@bash ./scripts/d-homework-i-run-start-crawling-level-1.sh
+
+.PHONY: homework-i-run-start_crawling-level-2
+# Start crawling (level 2)
+homework-i-run-start_crawling-level-2:
+	@bash ./scripts/d-homework-i-run-start-crawling-level-2.sh
