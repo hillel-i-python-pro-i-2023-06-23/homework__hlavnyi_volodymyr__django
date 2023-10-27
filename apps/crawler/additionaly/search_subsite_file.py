@@ -5,8 +5,6 @@ from typing import TypeAlias
 import aiohttp
 import bs4
 
-from apps.crawler.additionaly.loggers import get_custom_logger
-
 T_URL: TypeAlias = str
 T_URLS: TypeAlias = list[T_URL]
 T_URLS_AS_SET: TypeAlias = set[T_URL]
@@ -31,9 +29,10 @@ async def make_request(
     logger: logging.Logger,
 ) -> T_TEXT:
     text_for_return = ""
+    logger.info(f"Start request for url: {url}")
     try:
         async with session.get(url) as response:
-            logger.info(response.status)
+            # logger.info(response.status)
             text_for_return = await response.text()
     except Exception as e:
         logger.error(f"Exception: {e}")
@@ -41,19 +40,17 @@ async def make_request(
     return text_for_return
 
 
-async def handle_url(url: T_URL, session: aiohttp.ClientSession) -> T_URLS:
-    logger = get_custom_logger(name=url)
+async def handle_url(url: T_URL, session: aiohttp.ClientSession, logger: logging.Logger) -> T_URLS:
     text = await make_request(url=url, session=session, logger=logger)
     urls_as_set = await get_urls_from_text(text=text)
-
     return list(urls_as_set)
 
 
-async def async_search_for_site_sub_sites_from_list(sites_list: list) -> tuple:
+async def async_search_for_site_sub_sites_from_list(sites_list: list, logger: logging.Logger) -> tuple:
     async with aiohttp.ClientSession(
         cookie_jar=aiohttp.DummyCookieJar(),
     ) as session:
-        tasks_search = [handle_url(url=url, session=session) for url in sites_list]
+        tasks_search = [handle_url(url=url, session=session, logger=logger) for url in sites_list]
         list_for_return_sites = await asyncio.gather(*tasks_search)
 
     return list_for_return_sites
