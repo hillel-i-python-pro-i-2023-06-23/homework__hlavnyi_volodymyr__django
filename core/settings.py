@@ -21,10 +21,14 @@ from django.utils.crypto import get_random_string
 BASE_DIR = Path(__file__).resolve().parent.parent
 APPS_DIR = BASE_DIR.joinpath("apps")
 
+
 env = environ.FileAwareEnv()
 env.read_env(env_file=BASE_DIR.joinpath(".env"))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
+
+# Folder for save file with result of crawling
+FOLDER_FOR_SAVE_RESULT_FILES = BASE_DIR.joinpath(env.str("FOLDER_WITH_DB", default="db"))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = "django-insecure-0c!!r9=)^i)f5e8t!!@ui=o$s)cwd7dqfn9s5+=!hns+xb&#%9"
