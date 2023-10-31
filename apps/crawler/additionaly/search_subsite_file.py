@@ -32,10 +32,14 @@ async def make_request(
     logger.info(f"Start request for url: {url}")
     try:
         async with session.get(url) as response:
-            # logger.info(response.status)
-            text_for_return = await response.text()
+            if response.status == 200:
+                text_for_return = await response.text()
+            else:
+                logger.error(f"HTTP error {response.status} for url: {url}")
+    except aiohttp.ClientError as e:
+        logger.error(f"Client error: {e}")
     except Exception as e:
-        logger.error(f"Exception: {e}")
+        logger.error(f"An unexpected error occurred: {e}")
 
     return text_for_return
 

@@ -138,7 +138,7 @@ show-contacts-aggregation:
 .PHONY: start_crawling
 # Start crawling
 start_crawling:
-	@python manage.py start_crawling --filein in.txt --fileout out.txt --level 2 --show-progress
+	@python manage.py start_crawling2 1 100 --filein in.txt --fileout out.txt
 
 .PHONY: homework-i-run-start_crawling-level-1
 # Start crawling (level 1)

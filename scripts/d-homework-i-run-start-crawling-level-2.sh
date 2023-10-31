@@ -3,4 +3,4 @@
 make init-configs &&\
 export UID &&\
 	COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 \
-		docker compose run --rm app python manage.py start_crawling --filein in.txt --fileout out.txt --level 2
+		docker compose run --rm app python manage.py start_crawling2 2 100 --filein in.txt --fileout out.txt
