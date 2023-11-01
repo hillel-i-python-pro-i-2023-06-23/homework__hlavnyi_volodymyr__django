@@ -116,9 +116,8 @@ class Crawler:
             logging.info(f"Crawling links: {links}")
             tasks_local = []
             for link in links:
-                # next_url = urljoin(url, link)
                 next_url = get_correct_url(url=link, base_url=url)
-                # logging.info(f"Found link (depth {depth}): {next_url}")
+                logging.info(f"Found link (depth {depth}): {next_url}")
                 if next_url not in self.visited:
                     if next_url not in all_found_links:
                         all_found_links.append(next_url)
