@@ -36,10 +36,6 @@ def get_initial_list_of_sites_for_crawling() -> list:
         "https://www.example.com",
         "https://www.djangoproject.com",
         "https://www.wikipedia.org",
-        "https://ithillel.ua",
-        "https://cambridge.ua",
-        "https://www.codewars.com",
-        "https://cnn.com",
     ]
 
 
@@ -105,20 +101,20 @@ class Crawler:
             html = await self.fetch(session, url)
             soup = BeautifulSoup(html, "html.parser")
             links = [a.get("href") for a in soup.find_all("a", href=True)]
-            tasks = []
+            # logging.info(f"Crawling links: {links}")
+            tasks_local = []
             for link in links:
-                if link and link.startswith("http"):
-                    next_url = urljoin(url, link)
-                    print(f"Found link (depth {depth}): {next_url}")
-                    if next_url not in self.visited:
-                        if next_url not in all_found_links:
-                            all_found_links.append(next_url)
-                            tasks.append(self.crawl(session, next_url, depth + 1))
+                next_url = urljoin(url, link)
+                # logging.info(f"Found link (depth {depth}): {next_url}")
+                if next_url not in self.visited:
+                    if next_url not in all_found_links:
+                        all_found_links.append(next_url)
+                        tasks_local.append(self.crawl(session, next_url, depth + 1))
 
-            await asyncio.gather(*tasks)
+            await asyncio.gather(*tasks_local)
 
         except Exception as e:
-            print(f"Error fetching {url}: {e}")
+            logging.info(f"Error fetching {url}: {e}")
 
     async def run(self):
         async with aiohttp.ClientSession() as session:
@@ -142,7 +138,7 @@ def start_crawling_main():
 
 
 def start_crawling_main_part(filein="in.txt", fileout="out.txt", depth=1, max_links=100):
-    logger = logging.getLogger("django")
+    logger = logging.getLogger("Crawler")
     logger.setLevel(logging.INFO)
 
     t_start = datetime.datetime.now()
@@ -161,7 +157,7 @@ def start_crawling_main_part(filein="in.txt", fileout="out.txt", depth=1, max_li
 
 
 async def run_crawler(start_url, depth, max_links, logger):
-    print(f"Start Crawling for {start_url}")
+    logger.info(f"Start Crawling for {start_url}")
     crawler = Crawler(start_url, depth, max_links, logger)
     await crawler.run()
 
