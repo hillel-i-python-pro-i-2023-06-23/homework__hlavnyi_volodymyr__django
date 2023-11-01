@@ -2,6 +2,7 @@ import asyncio
 import logging
 import os
 import datetime
+from typing import TypeAlias
 
 import aiohttp
 import argparse
@@ -18,6 +19,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
 env = environ.FileAwareEnv()
 env.read_env(env_file=BASE_DIR.joinpath(".env"))
 FOLDER_FOR_SAVE_RESULT_FILES = BASE_DIR.joinpath(env.str("FOLDER_WITH_DB", default="db"))
+
+T_URL: TypeAlias = str
 
 
 def get_file_name(file_name: str) -> str:
@@ -76,6 +79,15 @@ def get_from_file_site_to_list(filein: str, list_new_site: list) -> list:
     return list_sites_for_crawling
 
 
+def get_correct_url(url: T_URL, base_url: T_URL) -> T_URL:
+    if url is None:
+        return ""
+    if url.startswith("http://") or url.startswith("https://"):
+        return url
+    else:
+        return urljoin(base_url, url)
+
+
 class Crawler:
     def __init__(self, start_url, max_depth, max_links, logger):
         self.start_url = start_url
@@ -101,10 +113,11 @@ class Crawler:
             html = await self.fetch(session, url)
             soup = BeautifulSoup(html, "html.parser")
             links = [a.get("href") for a in soup.find_all("a", href=True)]
-            # logging.info(f"Crawling links: {links}")
+            logging.info(f"Crawling links: {links}")
             tasks_local = []
             for link in links:
-                next_url = urljoin(url, link)
+                # next_url = urljoin(url, link)
+                next_url = get_correct_url(url=link, base_url=url)
                 # logging.info(f"Found link (depth {depth}): {next_url}")
                 if next_url not in self.visited:
                     if next_url not in all_found_links:
