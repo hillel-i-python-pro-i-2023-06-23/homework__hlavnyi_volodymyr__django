@@ -105,6 +105,7 @@ class Crawler:
             html = await self.fetch(session, url)
             soup = BeautifulSoup(html, "html.parser")
             links = [a.get("href") for a in soup.find_all("a", href=True)]
+            tasks = []
             for link in links:
                 if link and link.startswith("http"):
                     next_url = urljoin(url, link)
@@ -112,7 +113,9 @@ class Crawler:
                     if next_url not in self.visited:
                         if next_url not in all_found_links:
                             all_found_links.append(next_url)
-                            await self.crawl(session, next_url, depth + 1)
+                            tasks.append(self.crawl(session, next_url, depth + 1))
+
+            await asyncio.gather(*tasks)
 
         except Exception as e:
             print(f"Error fetching {url}: {e}")
@@ -123,9 +126,8 @@ class Crawler:
 
 
 async def async_main(list_sites_for_crawling, depth, max_links, logger):
-    for current_link in list_sites_for_crawling:
-        print(f"Start Crawling for {current_link}")
-        await run_crawler(current_link, depth, max_links, logger)
+    tasks = [run_crawler(link, depth, max_links, logger) for link in list_sites_for_crawling]
+    await asyncio.gather(*tasks)
 
 
 def start_crawling_main():
