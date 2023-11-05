@@ -139,8 +139,6 @@ class Crawler:
 async def async_main(list_sites_for_crawling, depth, max_links, logger, fileout):
     tasks = [run_crawler(link, depth, max_links, logger) for link in list_sites_for_crawling]
     await asyncio.gather(*tasks)
-    #    save_from_file_site_to_list(fileout=fileout, list_start_site=all_found_links)
-    #    all_found_links = []
     print(f"Finished and saved asyncio worker {list_sites_for_crawling}")
 
 
@@ -165,9 +163,6 @@ def start_crawling_main_part(
 
     list_start_sites = []
     list_sites_for_crawling = get_from_file_site_to_list(filein=filein, list_start_site=list_start_sites)
-    # asyncio.run(
-    #     async_main(list_sites_for_crawling=list_sites_for_crawling, depth=depth, max_links=max_links, logger=logger)
-    # )
     thread_list = []
     for i in range(len(list_sites_for_crawling)):
         t = threading.Thread(
