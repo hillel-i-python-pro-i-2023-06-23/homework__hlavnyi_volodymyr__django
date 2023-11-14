@@ -8,7 +8,7 @@ import random
 
 
 def worker(number):
-    sleep = random.randint(1, 10)
+    sleep = random.randint(1, 5)
     time.sleep(sleep)
     print(f"Threads: Worker {number} slept for {sleep} seconds")
 

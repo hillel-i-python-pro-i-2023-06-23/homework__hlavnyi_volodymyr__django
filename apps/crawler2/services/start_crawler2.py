@@ -2,6 +2,8 @@ import asyncio
 import logging
 import os
 import datetime
+import threading
+from typing import TypeAlias
 
 import aiohttp
 import argparse
@@ -13,14 +15,18 @@ from bs4 import BeautifulSoup
 from pathlib import Path
 
 all_found_links = []  # list of all found links
+dict_new_sites = {}  # dict of new sites for Crawling
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
 env = environ.FileAwareEnv()
 env.read_env(env_file=BASE_DIR.joinpath(".env"))
 FOLDER_FOR_SAVE_RESULT_FILES = BASE_DIR.joinpath(env.str("FOLDER_WITH_DB", default="db"))
 
+T_URL: TypeAlias = str
+T_FILENAME: TypeAlias = str
 
-def get_file_name(file_name: str) -> str:
+
+def get_file_name(file_name: T_FILENAME) -> T_FILENAME:
     """
     Get file name with iteration
     :param file_name: - file name
@@ -36,21 +42,17 @@ def get_initial_list_of_sites_for_crawling() -> list:
         "https://www.example.com",
         "https://www.djangoproject.com",
         "https://www.wikipedia.org",
-        "https://ithillel.ua",
-        "https://cambridge.ua",
-        "https://www.codewars.com",
-        "https://cnn.com",
     ]
 
 
-def save_from_file_site_to_list(fileout: str, list_new_site: list) -> None:
+def save_from_file_site_to_list(fileout: T_FILENAME, list_start_site: list) -> None:
     fileout_with_iteration = get_file_name(file_name=fileout)
     fileout_full = str(os.path.join(f"{FOLDER_FOR_SAVE_RESULT_FILES}", fileout_with_iteration))
-    if not list_new_site:
-        list_new_site = get_initial_list_of_sites_for_crawling()
+    if not list_start_site:
+        list_start_site = get_initial_list_of_sites_for_crawling()
 
-    with open(fileout_full, "w") as fileout_open:
-        for line in list_new_site:
+    with open(fileout_full, "a") as fileout_open:
+        for line in list_start_site:
             if isinstance(line, list):
                 for sub_line in line:
                     fileout_open.write(f"{sub_line.strip()}\n")
@@ -59,7 +61,7 @@ def save_from_file_site_to_list(fileout: str, list_new_site: list) -> None:
         fileout_open.close()
 
 
-def get_from_file_site_to_list(filein: str, list_new_site: list) -> list:
+def get_from_file_site_to_list(filein: T_FILENAME, list_start_site: list) -> list:
     """
     Get list of sites from file
     :param filein: - file name
@@ -70,7 +72,7 @@ def get_from_file_site_to_list(filein: str, list_new_site: list) -> list:
     filein_full = str(os.path.join(f"{FOLDER_FOR_SAVE_RESULT_FILES}", filein_with_iteration))
 
     if not os.path.exists(filein_full):
-        save_from_file_site_to_list(fileout=filein, list_new_site=list_new_site)
+        save_from_file_site_to_list(fileout=filein, list_start_site=list_start_site)
 
     list_sites_for_crawling = []
     with open(filein_full) as filein_open:
@@ -78,6 +80,15 @@ def get_from_file_site_to_list(filein: str, list_new_site: list) -> list:
     filein_open.close()
 
     return list_sites_for_crawling
+
+
+def get_correct_url(url: T_URL, base_url: T_URL) -> T_URL:
+    if url is None:
+        return ""
+    if url.startswith("http://") or url.startswith("https://"):
+        return url
+    else:
+        return urljoin(base_url, url)
 
 
 class Crawler:
@@ -105,27 +116,30 @@ class Crawler:
             html = await self.fetch(session, url)
             soup = BeautifulSoup(html, "html.parser")
             links = [a.get("href") for a in soup.find_all("a", href=True)]
+            logging.info(f"Crawling links: {links}")
+            tasks_local = []
             for link in links:
-                if link and link.startswith("http"):
-                    next_url = urljoin(url, link)
-                    print(f"Found link (depth {depth}): {next_url}")
-                    if next_url not in self.visited:
-                        if next_url not in all_found_links:
-                            all_found_links.append(next_url)
-                            await self.crawl(session, next_url, depth + 1)
+                next_url = get_correct_url(url=link, base_url=url)
+                logging.info(f"Found link (depth {depth}): {next_url}")
+                if next_url not in self.visited:
+                    if next_url not in all_found_links:
+                        all_found_links.append(next_url)
+                        tasks_local.append(self.crawl(session, next_url, depth + 1))
+
+            await asyncio.gather(*tasks_local)
 
         except Exception as e:
-            print(f"Error fetching {url}: {e}")
+            logging.info(f"Error fetching {url}: {e}")
 
     async def run(self):
         async with aiohttp.ClientSession() as session:
             await self.crawl(session, self.start_url, 0)
 
 
-async def async_main(list_sites_for_crawling, depth, max_links, logger):
-    for current_link in list_sites_for_crawling:
-        print(f"Start Crawling for {current_link}")
-        await run_crawler(current_link, depth, max_links, logger)
+async def async_main(list_sites_for_crawling, depth, max_links, logger, fileout):
+    tasks = [run_crawler(link, depth, max_links, logger) for link in list_sites_for_crawling]
+    await asyncio.gather(*tasks)
+    print(f"Finished and saved asyncio worker {list_sites_for_crawling}")
 
 
 def start_crawling_main():
@@ -139,19 +153,42 @@ def start_crawling_main():
     start_crawling_main_part(args.filein, args.fileout, args.depth, args.max_links)
 
 
-def start_crawling_main_part(filein="in.txt", fileout="out.txt", depth=1, max_links=100):
-    logger = logging.getLogger("django")
+def start_crawling_main_part(
+    filein: T_FILENAME = "in.txt", fileout: T_FILENAME = "out.txt", depth: int = 1, max_links: int = 100
+):
+    logger = logging.getLogger("Crawler")
     logger.setLevel(logging.INFO)
 
     t_start = datetime.datetime.now()
 
-    list_new_site = []
-    list_sites_for_crawling = get_from_file_site_to_list(filein=filein, list_new_site=list_new_site)
-    asyncio.run(
-        async_main(list_sites_for_crawling=list_sites_for_crawling, depth=depth, max_links=max_links, logger=logger)
-    )
+    list_start_sites = []
+    list_sites_for_crawling = get_from_file_site_to_list(filein=filein, list_start_site=list_start_sites)
+    thread_list = []
+    for i in range(len(list_sites_for_crawling)):
+        t = threading.Thread(
+            target=asyncio.run,
+            args=(
+                async_main(
+                    list_sites_for_crawling=[list_sites_for_crawling[i]],
+                    depth=depth,
+                    max_links=max_links,
+                    logger=logger,
+                    fileout=fileout,
+                ),
+            ),
+        )
+        t.start()
+        print(f"Started asyncio worker {list_sites_for_crawling[i].strip()}")
+        thread_list.append(t)
+
+    for t in thread_list:
+        t.join()  # Wait for the thread to complete
+
+    # Ensure all threads have completed before continuing
+
     logger.info(f"Finish Crawling for {list_sites_for_crawling}")
-    save_from_file_site_to_list(fileout=fileout, list_new_site=all_found_links)
+
+    save_from_file_site_to_list(fileout=fileout, list_start_site=all_found_links)
 
     t_finish = datetime.datetime.now()
     delta = t_finish - t_start
@@ -159,7 +196,7 @@ def start_crawling_main_part(filein="in.txt", fileout="out.txt", depth=1, max_li
 
 
 async def run_crawler(start_url, depth, max_links, logger):
-    print(f"Start Crawling for {start_url}")
+    logger.info(f"Start Crawling for {start_url}")
     crawler = Crawler(start_url, depth, max_links, logger)
     await crawler.run()
 
